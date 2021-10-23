@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('reservations/calendar', [ReservationController::class, 'calendar'])->name('reservations.calendar');
+Route::get('reservations/get-reservations', [ReservationController::class, 'getReservations']);
+Route::resource('reservations', ReservationController::class);
+Route::get('clients/get-clients-json', [ClientController::class, 'getClientsJson']);
+Route::resource('clients', ClientController::class);
