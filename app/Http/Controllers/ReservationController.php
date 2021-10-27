@@ -67,7 +67,7 @@ class ReservationController extends Controller
         if (empty($request->get('client_id'))) {
             $client = Client::create($request->get('client'));
         } else {
-            $client = new Client();
+            $client = Client::findOrFail($request['client']['id']);
             $client->update($request->get('client'));
         }
 
@@ -77,8 +77,8 @@ class ReservationController extends Controller
         $reservation->booking_fees_paid = $request->has('booking_fees_paid');
         $reservation->liquor_license_needed = $request->has('liquor_license_needed');
         $reservation->confirmation_sent = $request->has('confirmation_sent');
-        $reservation->client_id = $client->id;
         $reservation->fill($request->all());
+        $reservation->client_id = $client->id;
         $reservation->save();
 //        Reservation::create('')
 
@@ -86,7 +86,7 @@ class ReservationController extends Controller
 //        $client = Client::findOrFail($request['client']['id']);
 //        $client->update($request->get('client'));
 ////        $client->save();
-//        $request->session()->flash('success', 'La réservation à été sauvegardé');
+        $request->session()->flash('success', 'La réservation à été sauvegardé');
 ////        return view('reservations.edit')->with('reservation', $reservation);
 //        return back()->with('success', 'La réservation à été sauvegardé');
         return redirect()->route('reservations.edit', compact('reservation'));
@@ -140,7 +140,7 @@ class ReservationController extends Controller
         $reservation->update($request->all());
 
 //        $client->save();
-        $request->session()->flash('success', 'La réservation à été sauvegardé');
+        session()->flash('success', 'La réservation à été sauvegardé');
 //        return view('reservations.edit')->with('reservation', $reservation);
         return back()->with('success', 'La réservation à été sauvegardé');
 //        $reservation->client()->save();

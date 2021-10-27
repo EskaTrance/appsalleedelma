@@ -59,50 +59,53 @@
         .then(data => clients.push(...data));
 
         var input = document.getElementById("client_search");
-        autocomplete({
-            input: input,
-            disableAutoSelect: true,
-            fetch: function (text, update) {
-                text = text.toLowerCase();
-                // you can also use AJAX requests instead of preloaded data
-                // var suggestions = clients.filter(n => n.label.toLowerCase().startsWith(text));
-                var suggestions = clients.filter(client => {
-                    const regex = new RegExp(text, 'gi')
-                    return client.label.match(regex);
-                    // n.label.toLowerCase().startsWith(text)
+        if (input) {
+            autocomplete({
+                input: input,
+                disableAutoSelect: true,
+                fetch: function (text, update) {
+                    text = text.toLowerCase();
+                    // you can also use AJAX requests instead of preloaded data
+                    // var suggestions = clients.filter(n => n.label.toLowerCase().startsWith(text));
+                    var suggestions = clients.filter(client => {
+                        const regex = new RegExp(text, 'gi')
+                        return client.label.match(regex);
+                        // n.label.toLowerCase().startsWith(text)
 
-                })
-                update(suggestions);
-            },
-            render: function (item, currentValue) {
-                var div = document.createElement("div");
-                div.textContent = item.label;
-                if (item.rating === 'accept') {
-                    div.classList = 'bg-success';
-                } else if (item.rating === 'warning') {
-                    div.classList = 'bg-warning';
-                } else if (item.rating === 'block') {
-                    div.classList = 'bg-danger';
+                    })
+                    update(suggestions);
+                },
+                render: function (item, currentValue) {
+                    var div = document.createElement("div");
+                    div.textContent = item.label;
+                    if (item.rating === 'accept') {
+                        div.classList = 'bg-success';
+                    } else if (item.rating === 'warning') {
+                        div.classList = 'bg-warning';
+                    } else if (item.rating === 'block') {
+                        div.classList = 'bg-danger';
+                    }
+                    return div;
+                },
+                onSelect: function (item) {
+                    input.value = '';
+                    document.getElementById("client.id").value = item.id;
+                    document.getElementById("client_id").value = item.id;
+                    document.getElementById("enterprise_name").value = item.enterprise_name;
+                    document.getElementById("firstname").value = item.firstname;
+                    document.getElementById("lastname").value = item.lastname;
+                    document.getElementById("telephone").value = item.telephone;
+                    document.getElementById("email").value = item.email;
+                    document.getElementById("notes").value = item.notes;
+                    document.getElementById(item.rating).checked = true;
+
+                    document.getElementById('current_client_id').textContent = 'ID Client: ' + item.id;
+                    $('#current_client_id').removeClass('hide');
+                    $('#new_client_id').addClass('hide');
                 }
-                return div;
-            },
-            onSelect: function (item) {
-                input.value = '';
-                document.getElementById("client.id").value = item.id;
-                document.getElementById("client_id").value = item.id;
-                document.getElementById("enterprise_name").value = item.enterprise_name;
-                document.getElementById("firstname").value = item.firstname;
-                document.getElementById("lastname").value = item.lastname;
-                document.getElementById("telephone").value = item.telephone;
-                document.getElementById("email").value = item.email;
-                document.getElementById("notes").value = item.notes;
-                document.getElementById(item.rating).checked = true;
+            });
+        }
 
-                document.getElementById('current_client_id').textContent = 'ID Client: ' + item.id;
-                $('#current_client_id').removeClass('hide');
-                $('#new_client_id').addClass('hide');
-            }
-        });
 
         $('#new_client').click(function () {
             document.getElementById("client.id").value = '';
