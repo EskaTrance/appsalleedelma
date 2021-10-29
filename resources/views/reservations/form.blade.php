@@ -108,7 +108,7 @@ $clientId = old('client_id', $reservation->client_id);
                     Pré-réservation
                 </label>
             </div>
-            <div class="form-check form-check-inline warning">
+            <div class="form-check form-check-inline complete">
                 <input type="radio" id="visit" name="reservation_type" value="visit" {{ old('reservation_type', $reservation->reservation_type) === 'visit' ? 'checked' : ''}}>
                 <label for="visit">
                     Visite
@@ -223,84 +223,117 @@ $clientId = old('client_id', $reservation->client_id);
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group required">
-                <h5>Méthode de paiement</h5>
-                <div class="form-check form-check-inline success">
-                    <input type="radio" id="cash" name="payment_type" value="cash" {{ old('payment_type', $reservation->payment_type) === 'cash' || !$reservation->exists ? 'checked' : ''}}>
-                    <label for="cash">
-                        Comptant
-                    </label>
-                </div>
-                <div class="form-check form-check-inline warning">
-                    <input type="radio" id="interac" name="payment_type" value="interac" {{ old('payment_type', $reservation->payment_type) === 'interac' ? 'checked' : ''}}>
-                    <label for="interac">
-                        Interac
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-lg-3 col-6">
-            <div class="form-group form-group-default input-group required">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="pg-icon">$</i></span>
-                </div>
-                <div class="form-input-group">
-                    <label for="price">Prix</label>
-                    <input type="text" id="price" name="price" value="{{ old('price', $reservation->price) ?? 250 }}" data-m-dec="0" class="form-control autonumeric" required>
+    <div class="form-group-attached">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group required">
+                    <h5>Méthode de paiement</h5>
+                    <div class="form-check form-check-inline success">
+                        <input type="radio" id="cash" name="payment_type" value="cash" {{ old('payment_type', $reservation->payment_type) === 'cash' || !$reservation->exists ? 'checked' : ''}}>
+                        <label for="cash">
+                            Comptant
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline warning">
+                        <input type="radio" id="interac" name="payment_type" value="interac" {{ old('payment_type', $reservation->payment_type) === 'interac' ? 'checked' : ''}}>
+                        <label for="interac">
+                            Interac
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-lg-3 col-6">
-            <div class="form-group form-group-default form-check-group d-flex align-items-center">
-                <div class="form-check switch switch-lg success full-width right m-b-0">
-                    <input type="checkbox" id="price_paid" name="price_paid" value="1" {{ old('price_paid', $reservation->price_paid) ? 'checked' : '' }}>
-                    <label for="price_paid">Prix payé</label>
+        <div class="row">
+            <div class="col-md-4 col-lg-3 col-6">
+                <div class="form-group form-group-default input-group required">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="pg-icon">$</i></span>
+                    </div>
+                    <div class="form-input-group">
+                        <label for="booking_fees">Frais d'ouverture de dossier</label>
+                        <input type="text" id="booking_fees" name="booking_fees" value="{{ old('booking_fees', $reservation->booking_fees ?? 200) }}" data-m-dec="0" class="form-control autonumeric" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3 col-6">
+                <div class="form-group form-group-default form-check-group d-flex align-items-center">
+                    <div class="form-check switch switch-lg success full-width right m-b-0">
+                        <input type="checkbox" id="booking_fees_paid" name="booking_fees_paid" value="1" {{ old('booking_fees_paid', $reservation->booking_fees_paid) ? 'checked' : '' }}>
+                        <label for="booking_fees_paid">Frais d'ouverture de dossier payé</label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-lg-3 col-6">
-            <div class="form-group form-group-default input-group required">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="pg-icon">$</i></span>
+        <div class="row">
+            <div class="col-md-4 col-lg-3 col-6">
+                <div class="form-group form-group-default input-group required">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="pg-icon">$</i></span>
+                    </div>
+                    <div class="form-input-group">
+                        <label for="price">Prix</label>
+                        <input type="text" id="price" name="price" value="{{ old('price', $reservation->price) ?? 400 }}" data-m-dec="0" class="form-control autonumeric" required>
+                    </div>
                 </div>
-                <div class="form-input-group">
-                    <label for="security_deposit">Dépot de sécurité</label>
-                    <input type="text" id="security_deposit" name="security_deposit" value="{{ old('security_deposit', $reservation->security_deposit ?? 250) }}" data-m-dec="0" class="form-control autonumeric" required>
+            </div>
+            <div class="col-md-4 col-lg-3 col-6">
+                <div class="form-group form-group-default form-check-group d-flex align-items-center">
+                    <div class="form-check switch switch-lg success full-width right m-b-0">
+                        <input type="checkbox" id="price_paid" name="price_paid" value="1" {{ old('price_paid', $reservation->price_paid) ? 'checked' : '' }}>
+                        <label for="price_paid">Prix payé</label>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-lg-3 col-6">
-            <div class="form-group form-group-default form-check-group d-flex align-items-center">
-                <div class="form-check switch switch-lg success full-width right m-b-0">
-                    <input type="checkbox" id="security_deposit_paid" name="security_deposit_paid" value="1" {{ old('security_deposit_paid', $reservation->security_deposit_paid) ? 'checked' : '' }}>
-                    <label for="security_deposit_paid">Dépot de sécurité payé</label>
+        <div class="row">
+            <div class="col-md-4 col-lg-3 col-6">
+                <div class="form-group form-group-default input-group required">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="pg-icon">$</i></span>
+                    </div>
+                    <div class="form-input-group">
+                        <label for="total">Total</label>
+                        <input type="text" id="total" name="total" value="{{ (old('booking_fees', $reservation->booking_fees) + old('price', $reservation->price)) ?? 600 }}" data-m-dec="0" class="form-control autonumeric input-lg" disabled>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-lg-3 col-6">
-            <div class="form-group form-group-default input-group required">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="pg-icon">$</i></span>
-                </div>
-                <div class="form-input-group">
-                    <label for="booking_fees">Frais d'ouverture de dossier</label>
-                    <input type="text" id="booking_fees" name="booking_fees" value="{{ old('booking_fees', $reservation->booking_fees ?? 200) }}" data-m-dec="0" class="form-control autonumeric" required>
+        <div class="row">
+            <div class="col-md-4 col-lg-3 col-6">
+                <div class="form-group form-group-default input-group required">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="pg-icon">$</i></span>
+                    </div>
+                    <div class="form-input-group">
+                        <label for="security_deposit">Dépot de sécurité</label>
+                        <input type="text" id="security_deposit" name="security_deposit" value="{{ old('security_deposit', $reservation->security_deposit ?? 250) }}" data-m-dec="0" class="form-control autonumeric" required>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-lg-3 col-6">
-            <div class="form-group form-group-default form-check-group d-flex align-items-center">
-                <div class="form-check switch switch-lg success full-width right m-b-0">
-                    <input type="checkbox" id="booking_fees_paid" name="booking_fees_paid" value="1" {{ old('booking_fees_paid', $reservation->booking_fees_paid) ? 'checked' : '' }}>
-                    <label for="booking_fees_paid">Frais d'ouverture de dossier payé</label>
+        <div class="row clearfix">
+            <div class="col-md-4 col-lg-3">
+                <div class="form-group form-group-default input-group required" style="overflow: visible;">
+                    <div class="form-input-group">
+                        <label for="security_deposit_paid_date">Date du dépôt</label>
+                        <input id="security_deposit_paid_date" name="security_deposit_paid_date" type="text" value="{{ old('security_deposit_paid_date', $reservation->security_deposit_paid_date) }}" class="form-control datetimepicker-input" required>
+                    </div>
+                    <div class="input-group-append" data-target="#security_deposit_paid_date" data-toggle="datetimepicker">
+                        <span class="input-group-text"><i class="pg-icon">calendar</i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-4 col-lg-3">
+                <div class="form-group form-group-default input-group required" style="overflow: visible;">
+                    <div class="form-input-group">
+                        <label for="security_deposit_return_date">Date de retour du dépôt</label>
+                        <input id="security_deposit_return_date" name="security_deposit_return_date" type="text" value="{{ old('security_deposit_return_date', $reservation->security_deposit_return_date) }}" class="form-control datetimepicker-input" required>
+                    </div>
+                    <div class="input-group-append" data-target="#security_deposit_return_date" data-toggle="datetimepicker">
+                        <span class="input-group-text"><i class="pg-icon">calendar</i></span>
+                    </div>
                 </div>
             </div>
         </div>

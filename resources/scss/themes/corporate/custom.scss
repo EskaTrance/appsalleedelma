@@ -5,3 +5,32 @@
 //.bootstrap-datetimepicker-widget .collapse {
 //    display: list-item;
 //}
+.event_reservation div,
+.dhx_cal_editor.event_reservation,
+.dhx_cal_event_line.event_reservation {
+    background-color: $color-success!important;
+}
+.dhx_cal_event_clear.event_reservation {
+    color: $color-success!important;
+}
+
+.event_pre_reservation div,
+.dhx_cal_editor.event_pre_reservation,
+.dhx_cal_event_line.event_pre_reservation {
+    background-color: $color-primary!important;
+}
+.dhx_cal_event_clear.event_pre_reservation {
+    color: $color-primary!important;
+}
+
+.event_visit div,
+.dhx_cal_editor.event_visit,
+.dhx_cal_event_line.event_visit {
+    background-color: $color-complete!important;
+}
+.dhx_cal_event_clear.event_visit {
+    color: $color-complete!important;
+}
+#total.form-control[disabled] {
+    color: $color-contrast-higher;
+}

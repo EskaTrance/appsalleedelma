@@ -47,7 +47,16 @@
         //     format: 'YYYY-MM-DD HH:mm',
         //     stepping: 15
         // });
+
         $('.autonumeric').autoNumeric('init');
+
+        function calculateTotal() {
+            var price = parseInt($('#price').val())
+            var booking_fees = parseInt($('#booking_fees').val())
+            $('#total').val(price + booking_fees);
+        }
+        calculateTotal();
+        $('#booking_fees, #price').on('change', calculateTotal);
         $('#select_guest_number').change(function () {
             $('#guest_number').val($(this).val());
         })

@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ReservationController::class, 'calendar'])->name('reservations.calendar');
 Route::get('reservations/calendar', [ReservationController::class, 'calendar'])->name('reservations.calendar');
 Route::get('reservations/get-reservations', [ReservationController::class, 'getReservations']);
 Route::resource('reservations', ReservationController::class);

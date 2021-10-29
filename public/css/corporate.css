@@ -15412,3 +15412,37 @@ body.tempusdominus-bootstrap-datetimepicker-widget-day-click {
 .form-group-default .input-group-prepend .input-group-text:before {
   right: -40px;
 }
+
+.event_reservation div,
+.dhx_cal_editor.event_reservation,
+.dhx_cal_event_line.event_reservation {
+  background-color: #19AD79 !important;
+}
+
+.dhx_cal_event_clear.event_reservation {
+  color: #19AD79 !important;
+}
+
+.event_pre_reservation div,
+.dhx_cal_editor.event_pre_reservation,
+.dhx_cal_event_line.event_pre_reservation {
+  background-color: #6d5eac !important;
+}
+
+.dhx_cal_event_clear.event_pre_reservation {
+  color: #6d5eac !important;
+}
+
+.event_visit div,
+.dhx_cal_editor.event_visit,
+.dhx_cal_event_line.event_visit {
+  background-color: #37b0e9 !important;
+}
+
+.dhx_cal_event_clear.event_visit {
+  color: #37b0e9 !important;
+}
+
+#total.form-control[disabled] {
+  color: #212121;
+}

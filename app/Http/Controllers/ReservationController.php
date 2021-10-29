@@ -6,7 +6,10 @@ use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Models\Reservation;
 use App\Http\Requests\ReservationRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\MessageBag;
 use Illuminate\Validation\Rule;
 use Validator;
 
@@ -39,6 +42,7 @@ class ReservationController extends Controller
             $reservationsForCalendar[] = [
                 'id' => $reservation->id,
                 'text' => trim($reservation->client->enterprise_name . ' ' . $reservation->client->firstname . ' ' . $reservation->client->lastname),
+                'reservation_type' => $reservation->reservation_type,
                 'start_date' => $reservation->start_date,
                 'end_date' => $reservation->end_date
             ];
@@ -62,8 +66,20 @@ class ReservationController extends Controller
      *
      * @param  ReservationRequest  $request
      */
-    public function store(ReservationRequest $request)
+    public function store(ReservationRequest $request, Reservation $reservation)
     {
+        $reservation->fill($request->all());
+        $reservation->booking_fees_paid = $request->has('booking_fees_paid');
+        $reservation->price_paid = $request->has('price_paid');
+        $reservation->liquor_license_needed = $request->has('liquor_license_needed');
+        $reservation->confirmation_sent = $request->has('confirmation_sent');
+        $conflictReservation = $this->validateDateAvailable($reservation);
+        if ($conflictReservation) {
+            $errors = new MessageBag();
+            $errors->add('date_availability', 'Une réservation existe déjà de '. $conflictReservation->client->getClientName() . ' entre ' . $conflictReservation->start_date . ' et ' . $conflictReservation->end_date);
+            return back()->withErrors($errors);
+        }
+
         if (empty($request->get('client_id'))) {
             $client = Client::create($request->get('client'));
         } else {
@@ -71,13 +87,7 @@ class ReservationController extends Controller
             $client->update($request->get('client'));
         }
 
-        $reservation = new Reservation();
-        $reservation->price_paid = $request->has('price_paid');
-        $reservation->security_deposit_paid = $request->has('security_deposit_paid');
-        $reservation->booking_fees_paid = $request->has('booking_fees_paid');
-        $reservation->liquor_license_needed = $request->has('liquor_license_needed');
-        $reservation->confirmation_sent = $request->has('confirmation_sent');
-        $reservation->fill($request->all());
+//        $reservation = new Reservation();
         $reservation->client_id = $client->id;
         $reservation->save();
 //        Reservation::create('')
@@ -104,10 +114,7 @@ class ReservationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
      * @param  \App\Models\Reservation  $reservation
-     * @return \Illuminate\Http\Response
      */
     public function edit(Reservation $reservation)
     {
@@ -115,20 +122,24 @@ class ReservationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
      *
      * @param  ReservationRequest  $request
      * @param  \App\Models\Reservation  $reservation
      */
     public function update(ReservationRequest $request, Reservation $reservation)
     {
-//        $clientRequest = new ClientRequest;
-//        $request->validate($clientRequest->rules(), $request->get('client'));
+        $reservation->fill($request->all());
         $reservation->price_paid = $request->has('price_paid');
-        $reservation->security_deposit_paid = $request->has('security_deposit_paid');
         $reservation->booking_fees_paid = $request->has('booking_fees_paid');
         $reservation->liquor_license_needed = $request->has('liquor_license_needed');
         $reservation->confirmation_sent = $request->has('confirmation_sent');
+
+        $conflictReservation = $this->validateDateAvailable($reservation);
+        if ($conflictReservation) {
+            $errors = new MessageBag();
+            $errors->add('date_availability', 'Une réservation existe déjà de '. $conflictReservation->client->getClientName() . ' entre ' . $conflictReservation->start_date . ' et ' . $conflictReservation->end_date);
+            return back()->withInput()->withErrors($errors);
+        }
 
         if (empty($request->get('client_id'))) {
             $client = Client::create($request->get('client'));
@@ -137,13 +148,19 @@ class ReservationController extends Controller
             $client->update($request->get('client'));
         }
         $reservation->client_id = $client->id;
-        $reservation->update($request->all());
+        $reservation->save();
 
-//        $client->save();
         session()->flash('success', 'La réservation à été sauvegardé');
 //        return view('reservations.edit')->with('reservation', $reservation);
         return back()->with('success', 'La réservation à été sauvegardé');
-//        $reservation->client()->save();
+    }
+
+    /**
+     * @param Reservation $reservation
+     */
+    public function validateDateAvailable(Reservation $reservation)
+    {
+        return Reservation::whereBetween('start_date', [$reservation->start_date, $reservation->end_date])->orWhereBetween('end_date', [$reservation->start_date, $reservation->end_date])->where('id', '!=', $reservation->id)->first();
     }
 
     /**

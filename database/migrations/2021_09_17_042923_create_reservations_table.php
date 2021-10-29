@@ -20,13 +20,14 @@ class CreateReservationsTable extends Migration
             $table->string('type'); //Particulier, Entreprise
             $table->enum('reservation_type', ['pre_reservation', 'reservation', 'visit']);
 
-            $table->decimal('security_deposit')->default(0);
             $table->decimal('booking_fees')->default(0);
-            $table->decimal('price')->default(0);
-
-            $table->boolean('security_deposit_paid')->default(false);
             $table->boolean('booking_fees_paid')->default(false);
+            $table->decimal('price')->default(0);
             $table->boolean('price_paid')->default(false);
+            $table->decimal('security_deposit')->default(0);
+            $table->dateTime('security_deposit_paid_date')->nullable();
+            $table->dateTime('security_deposit_return_date')->nullable();
+
 
             $table->integer('guest_number')->nullable();
             $table->text('notes')->nullable();
