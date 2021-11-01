@@ -22,7 +22,7 @@
                     </div>
                 </div>
             @endif
-            <div class="card-body">
+            <div class="card-body" style="max-width: 600px;">
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -32,7 +32,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('reservations.update', ['reservation' => $reservation]) }}" method="POST" id="form-project" role="form" autocomplete="off" novalidate>
+                <form action="{{ route('reservations.update', ['reservation' => $reservation]) }}" method="POST" id="reservation_form" role="form" autocomplete="off" novalidate>
                     @method('PATCH')
                     @csrf
                     @include('reservations.form')
@@ -51,7 +51,7 @@
                         <div class="modal-content-wrapper">
                             <div class="modal-content">
                                 <div class="modal-body text-center m-t-20">
-                                    <form action="{{ route('reservations.destroy', ['reservation' => $reservation]) }}" method="POST" role="form" autocomplete="off" novalidate>
+                                    <form action="{{ route('reservations.destroy', ['reservation' => $reservation]) }}" method="POST" id="delete_reservation_form" role="form" autocomplete="off" novalidate>
                                         @method('DELETE')
                                         @csrf
                                         <h5 class="no-margin p-b-10">Supprimer la réservation ?</h5>
@@ -76,5 +76,8 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script src="{{ asset('js/reservation.js') }}" type="text/javascript"></script>
 @endsection
 

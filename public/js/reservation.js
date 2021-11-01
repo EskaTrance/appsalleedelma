@@ -3,24 +3,16 @@
 
     'use strict';
     $(document).ready(function () {
-        $('#datetimepicker12').datetimepicker({
-            inline: true,
-            sideBySide: true,
-            icons: {
-                time: "fa fa-clock",
-                date: "fa fa-calendar",
-                up: "fa fa-arrow-up",
-                down: "fa fa-arrow-down"
-            },
-        });
-        // $('#datetimepicker12').on('change', (event) => {
-        //     console.log('change');
-        // })
-        //
-        // $('#datetimepicker12').on('change.datetimepicker', (event) => {
-        //     console.log('change.datetimepicker');
-        // })
-        // $('#call_date, #end_date').datetimepicker({
+        // $('#datetimepicker12').datetimepicker({
+        //     inline: true,
+        //     sideBySide: true,
+        //     icons: {
+        //         time: "fa fa-clock",
+        //         date: "fa fa-calendar",
+        //         up: "fa fa-arrow-up",
+        //         down: "fa fa-arrow-down"
+        //     },
+        // });
         $('#call_date, #start_date, #end_date, #datetimepicker1').datetimepicker({
             allowInputToggle: true,
             locale: 'fr',
@@ -41,12 +33,6 @@
             }
             console.log('change.datetimepicker');
         });
-        // $('#start_date, #end_date').datetimepicker({
-        //     allowInputToggle: true,
-        //     locale: 'fr',
-        //     format: 'YYYY-MM-DD HH:mm',
-        //     stepping: 15
-        // });
 
         $('.autonumeric').autoNumeric('init');
 

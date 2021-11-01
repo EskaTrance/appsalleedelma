@@ -29,6 +29,7 @@
 {{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.38.0/css/tempusdominus-bootstrap-4.min.css" crossorigin="anonymous" />--}}
     <link class="main-stylesheet" href="{{ asset('css/corporate.css') }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('css/dhtmlxscheduler.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('css/dhtmlxscheduler_material.css') }}" rel="stylesheet" type="text/css"/>
     <!-- Please remove the file below for production: Contains demo classes -->
 {{--    <link class="main-stylesheet" href="assets/css/style.css" rel="stylesheet" type="text/css"/>--}}
 </head>

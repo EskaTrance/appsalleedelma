@@ -3,7 +3,7 @@ $clientId = old('client_id', $reservation->client_id);
 @endphp
 <h4>Client</h4>
 <div class="row">
-    <div class="col-12 col-md-8">
+    <div class="col-md-6 col-lg-4">
         <div class="form-group form-group-default">
             <label for="client_search">Recherche de client</label>
             <input type="hidden" id="client.id" name="client[id]" value="{{ old('client_id', $reservation->client_id) }}">
@@ -11,19 +11,19 @@ $clientId = old('client_id', $reservation->client_id);
             <input type="text" id="client_search" class="form-control">
         </div>
     </div>
-    <div class="col-12 col-md-4">
+    <div class="col-md-2 col-lg-4">
         <button id="new_client" class="btn btn-success mt-2" type="button">Créer un nouveau client</button>
     </div>
 </div>
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-6">
         <h5 id="current_client_id" class="{{ empty($clientId) ? 'hide' : '' }}">ID client: {{ $clientId }}</h5>
         <h5 id="new_client_id" class="{{ $clientId ? 'hide' : '' }}">Nouveau client</h5>
     </div>
 </div>
 <div class="form-group-attached">
     <div class="row clearfix">
-        <div class="col-6">
+        <div class="col-md-4 col-lg-3">
             <div class="form-group form-group-default">
                 <label for="enterprise_name">Nom de l'entreprise</label>
                 <input type="text" id="enterprise_name" name="client[enterprise_name]" value="{{ old('client.enterprise_name', $reservation->client->enterprise_name) }}" class="form-control">
@@ -31,13 +31,13 @@ $clientId = old('client_id', $reservation->client_id);
         </div>
     </div>
     <div class="row clearfix">
-        <div class="col-6">
+        <div class="col-md-4 col-lg-3">
             <div class="form-group form-group-default">
                 <label for="firstname">Prénom</label>
                 <input type="text" id="firstname" name="client[firstname]" value="{{ old('client.firstname', $reservation->client->firstname) }}" class="form-control">
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-md-4 col-lg-3">
             <div class="form-group form-group-default">
                 <label for="lastname">Nom de famille</label>
                 <input type="text" id="lastname" name="client[lastname]" value="{{ old('client.lastname', $reservation->client->lastname) }}" class="form-control">
@@ -45,13 +45,13 @@ $clientId = old('client_id', $reservation->client_id);
         </div>
     </div>
     <div class="row clearfix">
-        <div class="col-6">
+        <div class="col-md-4 col-lg-3">
             <div class="form-group form-group-default">
                 <label for="telephone">Téléphone</label>
                 <input type="text" id="telephone" name="client[telephone]" value="{{ old('client.telephone', $reservation->client->telephone) }}" class="form-control">
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-md-4 col-lg-3">
             <div class="form-group form-group-default">
                 <label for="email">Courriel</label>
                 <input type="text" id="email" name="client[email]" value="{{ old('client.email', $reservation->client->email) }}" class="form-control">
@@ -60,7 +60,7 @@ $clientId = old('client_id', $reservation->client_id);
     </div>
 </div>
 <div class="row clearfix">
-    <div class="col-12">
+    <div class="col-md-6">
         <h6>Évaluation</h6>
         <div class="form-group required">
             <div class="form-check form-check-inline success">
@@ -85,7 +85,7 @@ $clientId = old('client_id', $reservation->client_id);
     </div>
 </div>
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-6">
         <div class="form-group">
             <label for="client_notes" class="h6">Notes client</label>
             <textarea id="client_notes" name="client[notes]" class="form-control" rows="2" spellcheck="false">{{ old('client.notes', $reservation->client->notes) }}</textarea>
@@ -93,7 +93,7 @@ $clientId = old('client_id', $reservation->client_id);
     </div>
 </div>
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <div class="form-group required">
             <h4>Réservation</h4>
             <div class="form-check form-check-inline success">
@@ -118,7 +118,7 @@ $clientId = old('client_id', $reservation->client_id);
     </div>
 </div>
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-6">
         <div class="form-group form-group-default">
             <label for="invoice_number">No de facture</label>
             <input type="text" id="invoice_number" name="invoice_number" value="{{ old('invoice_number', $reservation->invoice_number) }}" class="form-control">
@@ -126,7 +126,7 @@ $clientId = old('client_id', $reservation->client_id);
     </div>
 </div>
 <div class="row">
-    <div class="col-12">
+    <div class="col-md-8">
         <h5>Type de client</h5>
         <div class="form-group required">
             <div class="form-check form-check-inline success">
@@ -153,7 +153,7 @@ $clientId = old('client_id', $reservation->client_id);
 <h5>Date de l'appel</h5>
 <div class="form-group-attached">
     <div class="row clearfix">
-        <div class="col-12">
+        <div class="col-md-4 col-lg-3">
             <div class="form-group form-group-default input-group date required" data-target-input="nearest" style="overflow: visible;">
                 <div class="form-input-group">
                     <label for="call_date">Date de l'appel</label>
@@ -169,7 +169,7 @@ $clientId = old('client_id', $reservation->client_id);
 <h5>Date de l'activité</h5>
 <div class="form-group-attached">
     <div class="row clearfix">
-        <div class="col-12">
+        <div class="col-md-4 col-lg-3">
             <div class="form-group form-group-default input-group required" style="overflow: visible;">
                 <div class="form-input-group">
                     <label for="start_date">Date de début</label>
@@ -182,7 +182,7 @@ $clientId = old('client_id', $reservation->client_id);
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-4 col-lg-3">
             <div class="form-group form-group-default input-group required" style="overflow: visible;">
                 <div class="form-input-group">
                     <label for="end_date">Date de fin</label>
@@ -197,13 +197,13 @@ $clientId = old('client_id', $reservation->client_id);
 </div>
 <div class="form-group-attached">
     <div class="row">
-        <div class="col-8">
+        <div class="col-md-4 col-lg-3">
             <div class="form-group form-group-default">
                 <label for="guest_number">Nombre de personnes</label>
                 <input type="text" id="guest_number" name="guest_number" value="{{ old('guest_number', $reservation->guest_number ?? 25) }}" class="form-control">
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-md-4 col-lg-3">
             <div class="">
                 <select class="cs-select cs-skin-slide" id="select_guest_number" data-init-plugin="cs-select">
                     <option value="25">25</option>
@@ -214,7 +214,7 @@ $clientId = old('client_id', $reservation->client_id);
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-4 col-lg-3 col-6">
             <div class="form-group form-group-default form-check-group d-flex align-items-center">
                 <div class="form-check switch switch-lg success full-width right m-b-0">
                     <input type="checkbox" id="liquor_license_needed" name="liquor_license_needed" value="1" {{ old('liquor_license_needed', $reservation->liquor_license_needed) ? 'checked' : '' }}>
@@ -225,7 +225,7 @@ $clientId = old('client_id', $reservation->client_id);
     </div>
     <div class="form-group-attached">
         <div class="row">
-            <div class="col-12">
+            <div class="col-md-6">
                 <div class="form-group required">
                     <h5>Méthode de paiement</h5>
                     <div class="form-check form-check-inline success">
@@ -244,7 +244,7 @@ $clientId = old('client_id', $reservation->client_id);
             </div>
         </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-4 col-lg-3 col-6">
                 <div class="form-group form-group-default input-group required">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="pg-icon">$</i></span>
@@ -255,7 +255,7 @@ $clientId = old('client_id', $reservation->client_id);
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-4 col-lg-3 col-6">
                 <div class="form-group form-group-default form-check-group d-flex align-items-center">
                     <div class="form-check switch switch-lg success full-width right m-b-0">
                         <input type="checkbox" id="booking_fees_paid" name="booking_fees_paid" value="1" {{ old('booking_fees_paid', $reservation->booking_fees_paid) ? 'checked' : '' }}>
@@ -265,7 +265,7 @@ $clientId = old('client_id', $reservation->client_id);
             </div>
         </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-4 col-lg-3 col-6">
                 <div class="form-group form-group-default input-group required">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="pg-icon">$</i></span>
@@ -276,7 +276,7 @@ $clientId = old('client_id', $reservation->client_id);
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-md-4 col-lg-3 col-6">
                 <div class="form-group form-group-default form-check-group d-flex align-items-center">
                     <div class="form-check switch switch-lg success full-width right m-b-0">
                         <input type="checkbox" id="price_paid" name="price_paid" value="1" {{ old('price_paid', $reservation->price_paid) ? 'checked' : '' }}>
@@ -286,7 +286,7 @@ $clientId = old('client_id', $reservation->client_id);
             </div>
         </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-4 col-lg-3 col-6">
                 <div class="form-group form-group-default input-group required">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="pg-icon">$</i></span>
@@ -299,7 +299,7 @@ $clientId = old('client_id', $reservation->client_id);
             </div>
         </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-4 col-lg-3 col-6">
                 <div class="form-group form-group-default input-group required">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="pg-icon">$</i></span>
@@ -312,7 +312,7 @@ $clientId = old('client_id', $reservation->client_id);
             </div>
         </div>
         <div class="row clearfix">
-            <div class="col-12">
+            <div class="col-md-4 col-lg-3">
                 <div class="form-group form-group-default input-group required" style="overflow: visible;">
                     <div class="form-input-group">
                         <label for="security_deposit_paid_date">Date du dépôt</label>
@@ -325,7 +325,7 @@ $clientId = old('client_id', $reservation->client_id);
             </div>
         </div>
         <div class="row clearfix">
-            <div class="col-12">
+            <div class="col-md-4 col-lg-3">
                 <div class="form-group form-group-default input-group required" style="overflow: visible;">
                     <div class="form-input-group">
                         <label for="security_deposit_return_date">Date de retour du dépôt</label>
@@ -339,7 +339,7 @@ $clientId = old('client_id', $reservation->client_id);
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-6">
             <div class="form-group">
                 <label for="notes" class="h6">Notes</label>
                 <textarea id="notes" name="notes" class="form-control" rows="2" spellcheck="false">{{ old('notes', $reservation->notes) }}</textarea>

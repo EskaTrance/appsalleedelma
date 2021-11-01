@@ -30,14 +30,38 @@
                 <div class="dhx_cal_header"></div>
                 <div class="dhx_cal_data"></div>
             </div>
+            <div id="scheduler_reservation_lightbox" class="modal fade">
+{{--            <div id="scheduler_reservation_lightbox" class="modal fade" style="width:100%!important; max-width: 800px!important;">--}}
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal_title">New Event</h5>
+                            <button type="button" id="close_modal" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div id="form_lightbox" class="modal-body" style="padding: 0">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler les changements</button>
+                        </div>
+                    </div>
+                </div>
+{{--                <div class="dhx_cal_ltitle" role="heading" style="cursor: move;">--}}
+{{--                    <span class="dhx_mark">&nbsp;</span><span class="dhx_time">13:30 - 13:35</span><span class="dhx_title">New event</span>--}}
+{{--                </div>--}}
+{{--                <div class="dhx_cal_larea">--}}
+{{--                    <div id="form_lightbox" class="dhx_wrap_section">--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+            </div>
         </div>
-        <div id="reservation_form"></div>
         <!-- END CONTAINER FLUID -->
     </div>
 @endsection
 @section('scripts')
     <script src="{{ asset('js/dhtmlxscheduler.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/dhtmlxscheduler_active_links.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/dhtmlxscheduler_quick_info.js') }}" type="text/javascript"></script>
+{{--    <script src="{{ asset('js/dhtmlxscheduler_quick_info.js') }}" type="text/javascript"></script>--}}
     <script src="{{ asset('js/scheduler.js') }}" type="text/javascript"></script>
 @endsection

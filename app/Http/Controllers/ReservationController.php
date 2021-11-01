@@ -62,6 +62,16 @@ class ReservationController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function createxhr()
+    {
+        $reservation = new Reservation();
+        $reservation->client = new Client();
+        return view('reservations.createxhr')->with('reservation', $reservation);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  ReservationRequest  $request
@@ -103,22 +113,18 @@ class ReservationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Reservation  $reservation
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Reservation $reservation)
-    {
-        //
-    }
-
-    /**
      * @param  \App\Models\Reservation  $reservation
      */
     public function edit(Reservation $reservation)
     {
         return view('reservations.edit')->with('reservation', $reservation);
+    }
+    /**
+     * @param  \App\Models\Reservation  $reservation
+     */
+    public function editxhr(Reservation $reservation)
+    {
+        return view('reservations.editxhr')->with('reservation', $reservation);
     }
 
     /**
@@ -160,7 +166,11 @@ class ReservationController extends Controller
      */
     public function validateDateAvailable(Reservation $reservation)
     {
-        return Reservation::whereBetween('start_date', [$reservation->start_date, $reservation->end_date])->orWhereBetween('end_date', [$reservation->start_date, $reservation->end_date])->where('id', '!=', $reservation->id)->first();
+        $conflictReservation = Reservation::where('id', '!=', $reservation->id)->where(function ($query) use ($reservation) {
+            $query->whereBetween('start_date', [$reservation->start_date, $reservation->end_date])
+                ->orWhereBetween('end_date', [$reservation->start_date, $reservation->end_date]);
+        })->first();
+        return $conflictReservation;
     }
 
     /**
