@@ -260,6 +260,8 @@ $(document).ready(function () {
             data: form.serialize(),
             success:function(response){
                 var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
+                let event = ev;
+                // scheduler.changeEventId(ev.id, )
                 ev.text = document.getElementById("enterprise_name").value;
                 // ev.custom1 = html("custom1").value;
                 // ev.custom2 = html("custom2").value;

@@ -16,7 +16,7 @@
         </div>
         <!-- END JUMBOTRON -->
         <!-- START CONTAINER FLUID -->
-        <div class="container-fluid container-fixed-lg">
+        <div class="container">
             <div id="scheduler" class="dhx_cal_container" style='width:100%; height:600px;'>
                 <div class="dhx_cal_navline">
                     <div class="dhx_cal_prev_button">&nbsp;</div>

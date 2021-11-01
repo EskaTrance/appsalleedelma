@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid container-fixed-lg">
+    <div class="container">
         <div class="card">
             @if ($flash = session('success'))
                 <div class="card-header">
