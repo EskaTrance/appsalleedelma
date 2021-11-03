@@ -41,7 +41,9 @@ class ReservationRequest extends FormRequest
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
             //TODO: Array merge client rules
-            'client.enterprise_name' => 'required_without:firstname,lastname',
+            'client.firstname' => 'required',
+            'client.lastname' => 'required',
+            'client.telephone' => 'required',
             'client.rating' => 'required|in:accept,warning,block'
         ];
     }

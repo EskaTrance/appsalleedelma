@@ -15,14 +15,36 @@
                 down: "fa fa-arrow-down"
             }
         });
-        $('#start_date').on('change.datetimepicker', (e) => {
-            if (e.date) {
-                if (!e.oldDate || e.date.dayOfYear() !== e.oldDate.dayOfYear()) {
-                    $('#invoice_number').val(e.date.format('YYYYMMDD') + 'A');
+        $('#security_deposit_return_date').on('show.datetimepicker', (e) => {
+            if (!e.oldDate) {
+                let end_date = $('#end_date').val();
+                if (moment(end_date).isValid()) {
+                    end_date = moment(end_date).set('hours', moment().hours()).set('minutes', moment().minutes()).add(1, 'days');
+                    $('#security_deposit_return_date').val(end_date.format('YYYY-MM-DD HH:mm'));
                 }
             }
-            console.log('change.datetimepicker');
         });
+        $('#start_date').on('change.datetimepicker', (e) => {
+            var end_date = $('#end_date').val();
+            if (!moment(end_date).isValid() || e.date > moment(end_date) || (e.oldDate && e.date.dayOfYear() !== e.oldDate.dayOfYear())) {
+                let start_date = moment(e.date);
+                let end_date = start_date.add(1, 'days').hours(1).minutes(30);
+                $('#end_date').val(end_date.format('YYYY-MM-DD HH:mm'));
+            }
+            generateInvoiceNumber();
+        });
+        $('input[name=reservation_type]').change(function() {
+            generateInvoiceNumber();
+        });
+        function generateInvoiceNumber() {
+            if ($('input[name=reservation_type]:checked').val() === 'reservation') {
+                var start_date = $('#start_date').val();
+                if (moment(start_date).isValid())
+                $('#invoice_number').val(moment(start_date).format('YYYYMMDD') + 'A');
+            } else {
+                $('#invoice_number').val('');
+            }
+        }
 
         $('.autonumeric').autoNumeric('init');
 
@@ -80,8 +102,10 @@
                     document.getElementById("firstname").value = item.firstname;
                     document.getElementById("lastname").value = item.lastname;
                     document.getElementById("telephone").value = item.telephone;
+                    document.getElementById("cellphone1").value = item.cellphone1;
+                    document.getElementById("cellphone2").value = item.cellphone2;
                     document.getElementById("email").value = item.email;
-                    document.getElementById("notes").value = item.notes;
+                    document.getElementById("client_notes").value = item.notes;
                     document.getElementById(item.rating).checked = true;
 
                     document.getElementById('current_client_id').textContent = 'ID Client: ' + item.id;
@@ -99,8 +123,10 @@
             document.getElementById("firstname").value = '';
             document.getElementById("lastname").value = '';
             document.getElementById("telephone").value = '';
+            document.getElementById("cellphone1").value = '';
+            document.getElementById("cellphone2").value = '';
             document.getElementById("email").value = '';
-            document.getElementById("notes").value = '';
+            document.getElementById("client_notes").value = '';
             document.getElementById('accept').checked = true;
 
             $('#new_client_id').removeClass('hide');

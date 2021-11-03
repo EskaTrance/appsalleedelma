@@ -58,6 +58,20 @@ $clientId = old('client_id', $reservation->client_id);
             </div>
         </div>
     </div>
+    <div class="row clearfix">
+        <div class="col-6">
+            <div class="form-group form-group-default">
+                <label for="cellphone1">Cellulaire principal</label>
+                <input type="text" id="cellphone1" name="client[cellphone1]" value="{{ old('client.cellphone1', $reservation->client->cellphone1) }}" class="form-control">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group form-group-default">
+                <label for="cellphone2">Cellulaire 2</label>
+                <input type="text" id="cellphone2" name="client[cellphone2]" value="{{ old('client.cellphone2', $reservation->client->cellphone2) }}" class="form-control">
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row clearfix">
     <div class="col-12">
@@ -97,13 +111,13 @@ $clientId = old('client_id', $reservation->client_id);
         <div class="form-group required">
             <h4>Réservation</h4>
             <div class="form-check form-check-inline success">
-                <input type="radio" id="reservation" name="reservation_type" value="reservation" {{ old('reservation_type', $reservation->reservation_type) === 'reservation' || empty($reservation->reservation_type) ? 'checked' : ''}}>
+                <input type="radio" id="reservation" name="reservation_type" value="reservation" {{ old('reservation_type', $reservation->reservation_type) === 'reservation' ? 'checked' : ''}}>
                 <label for="reservation">
                     Réservation
                 </label>
             </div>
             <div class="form-check form-check-inline primary">
-                <input type="radio" id="pre_reservation" name="reservation_type" value="pre_reservation" {{ old('reservation_type', $reservation->reservation_type) === 'pre_reservation' ? 'checked' : ''}}>
+                <input type="radio" id="pre_reservation" name="reservation_type" value="pre_reservation" {{ old('reservation_type', $reservation->reservation_type) === 'pre_reservation' || empty($reservation->reservation_type) ? 'checked' : ''}}>
                 <label for="pre_reservation">
                     Pré-réservation
                 </label>
@@ -287,7 +301,7 @@ $clientId = old('client_id', $reservation->client_id);
         </div>
         <div class="row">
             <div class="col-6">
-                <div class="form-group form-group-default input-group required">
+                <div class="form-group form-group-default input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="pg-icon">$</i></span>
                     </div>
@@ -306,17 +320,17 @@ $clientId = old('client_id', $reservation->client_id);
                     </div>
                     <div class="form-input-group">
                         <label for="security_deposit">Dépot de sécurité</label>
-                        <input type="text" id="security_deposit" name="security_deposit" value="{{ old('security_deposit', $reservation->security_deposit ?? 250) }}" data-m-dec="0" class="form-control autonumeric" required>
+                        <input type="text" id="security_deposit" name="security_deposit" value="{{ old('security_deposit', $reservation->security_deposit ?? 250) }}" data-m-dec="0" class="form-control autonumeric">
                     </div>
                 </div>
             </div>
         </div>
         <div class="row clearfix">
             <div class="col-12">
-                <div class="form-group form-group-default input-group required" style="overflow: visible;">
+                <div class="form-group form-group-default input-group" style="overflow: visible;">
                     <div class="form-input-group">
                         <label for="security_deposit_paid_date">Date du dépôt</label>
-                        <input id="security_deposit_paid_date" name="security_deposit_paid_date" type="text" value="{{ old('security_deposit_paid_date', $reservation->security_deposit_paid_date) }}" class="form-control datetimepicker-input" required>
+                        <input id="security_deposit_paid_date" name="security_deposit_paid_date" type="text" value="{{ old('security_deposit_paid_date', $reservation->security_deposit_paid_date) }}" class="form-control datetimepicker-input">
                     </div>
                     <div class="input-group-append" data-target="#security_deposit_paid_date" data-toggle="datetimepicker">
                         <span class="input-group-text"><i class="pg-icon">calendar</i></span>
@@ -326,7 +340,7 @@ $clientId = old('client_id', $reservation->client_id);
         </div>
         <div class="row clearfix">
             <div class="col-12">
-                <div class="form-group form-group-default input-group required" style="overflow: visible;">
+                <div class="form-group form-group-default input-group" style="overflow: visible;">
                     <div class="form-input-group">
                         <label for="security_deposit_return_date">Date de retour du dépôt</label>
                         <input id="security_deposit_return_date" name="security_deposit_return_date" type="text" value="{{ old('security_deposit_return_date', $reservation->security_deposit_return_date) }}" class="form-control datetimepicker-input" required>

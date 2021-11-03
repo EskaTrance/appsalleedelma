@@ -44,6 +44,8 @@ class Client extends Model
         'firstname',
         'lastname',
         'telephone',
+        'cellphone1',
+        'cellphone2',
         'email',
         'rating',
         'notes'
