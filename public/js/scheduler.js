@@ -12,6 +12,15 @@ $(document).ready(function () {
                 down: "fa fa-arrow-down"
             }
         });
+        $('#security_deposit_return_date').on('show.datetimepicker', (e) => {
+            if (!e.oldDate) {
+                let end_date = $('#end_date').val();
+                if (moment(end_date).isValid()) {
+                    end_date = moment(end_date).set('hours', moment().hours()).set('minutes', moment().minutes()).add(1, 'days');
+                    $('#security_deposit_return_date').val(end_date.format('YYYY-MM-DD HH:mm'));
+                }
+            }
+        });
         $('#start_date').on('change.datetimepicker', (e) => {
             var end_date = $('#end_date').val();
             if (!moment(end_date).isValid() || e.date > moment(end_date) || (e.oldDate && e.date.dayOfYear() !== e.oldDate.dayOfYear())) {
