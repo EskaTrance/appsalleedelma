@@ -24,7 +24,9 @@ class ClientRequest extends FormRequest
     public function rules()
     {
         return [
-            'enterprise_name' => 'required_without:firstname,lastname',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'telephone' => 'required',
             'rating' => 'required|in:accept,warning,block'
         ];
     }

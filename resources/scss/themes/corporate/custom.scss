@@ -2,6 +2,11 @@
 .form-group-default .input-group-prepend .input-group-text:before {
     right: -40px;
 }
+
+.autocomplete {
+    z-index: 9999;
+}
+
 //.bootstrap-datetimepicker-widget .collapse {
 //    display: list-item;
 //}

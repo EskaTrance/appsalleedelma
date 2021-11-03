@@ -1,6 +1,6 @@
 $(document).ready(function () {
     function bindModalFunctions() {
-        $('#call_date, #start_date, #end_date, #datetimepicker1').datetimepicker({
+        $('#call_date, #start_date, #end_date, #security_deposit_return_date, #security_deposit_paid_date').datetimepicker({
             allowInputToggle: true,
             locale: 'fr',
             format: 'YYYY-MM-DD HH:mm',
@@ -20,6 +20,7 @@ $(document).ready(function () {
             }
             console.log('change.datetimepicker');
         });
+
 
         $('.autonumeric').autoNumeric('init');
 
@@ -121,6 +122,13 @@ $(document).ready(function () {
             $('#scheduler_reservation_lightbox').modal('show');
             scheduler.startLightbox(id, reservationForm);
             bindModalFunctions();
+            if (id > 100000000) {
+                let start_date = moment(event.start_date).hours(9).minutes(0);
+                $('#start_date').val(start_date.format('YYYY-MM-DD HH:mm'));
+                let end_date = start_date.add(1, 'days').hours(1).minutes(30);
+                $('#end_date').val(end_date.format('YYYY-MM-DD HH:mm'));
+                $('#invoice_number').val(start_date.format('YYYYMMDD') + 'A');
+            }
         });
     }
     scheduler.attachEvent("onEventAdded", function(id,ev){
@@ -137,13 +145,6 @@ $(document).ready(function () {
         scheduler.endLightbox(false, document.getElementById('scheduler_reservation_lightbox'));
         scheduler.deleteEvent(event_id);
     }
-    //Scheduler Config
-    scheduler.config.all_time = 'short'
-    scheduler.config.time_step = 15;
-    scheduler.config.start_on_monday = true;
-    scheduler.locale.labels.day_tab = "Jour";
-    scheduler.locale.labels.week_tab = "Semaine";
-    scheduler.locale.labels.month_tab = "Mois";
     scheduler.attachEvent("onBeforeViewChange", function (old_mode, old_date, mode, date) {
         if (mode === "month")
             scheduler.config.dblclick_create = false;
@@ -168,7 +169,8 @@ $(document).ready(function () {
     // different configs for different screen sizes
     var compactView = {
         xy: {
-            nav_height: 80
+            nav_height: 80,
+            scale_height: 40
         },
         config: {
             header: {
@@ -194,7 +196,9 @@ $(document).ready(function () {
         },
         templates: {
             month_scale_date: scheduler.date.date_to_str("%D"),
-            week_scale_date: scheduler.date.date_to_str("%D, %j"),
+            week_scale_date: function(date) {
+                return scheduler.date.date_to_str('%j')(date) + '<br/>' + scheduler.date.date_to_str('%D')(date);
+            },
             event_bar_date: function(start,end,ev) {
                 return "";
             }
@@ -217,14 +221,13 @@ $(document).ready(function () {
             ]
         },
         templates: {
-            month_scale_date: scheduler.date.date_to_str("%l"),
-            week_scale_date: scheduler.date.date_to_str("%l, %F %j"),
+            month_scale_date: scheduler.date.date_to_str("%D"),
+            week_scale_date: scheduler.date.date_to_str("%D, %M %j"),
             event_bar_date: function(start,end,ev) {
                 return "• <b>"+scheduler.templates.event_date(start)+"</b> ";
             }
         }
     };
-
     function resetConfig(){
         var settings;
         if(window.innerWidth < 1000){
@@ -238,14 +241,22 @@ $(document).ready(function () {
         scheduler.utils.mixin(scheduler.xy, settings.xy, true);
         return true;
     }
-
-    scheduler.config.responsive_lightbox = true;
     resetConfig();
     scheduler.attachEvent("onBeforeViewChange", resetConfig);
     scheduler.attachEvent("onSchedulerResize", resetConfig);
     scheduler.templates.event_class = function (start, end, ev) {
         return 'event_' + ev.reservation_type;
     }
+    //Scheduler Config
+    scheduler.config.all_timed = "short";
+    scheduler.config.multi_day = true;
+    scheduler.config.limit_time_select = true;
+    scheduler.config.time_step = 15;
+    scheduler.config.start_on_monday = true;
+    scheduler.locale.labels.day_tab = "Jour";
+    scheduler.locale.labels.week_tab = "Semaine";
+    scheduler.locale.labels.month_tab = "Mois";
+    scheduler.config.responsive_lightbox = true;
     scheduler.init("scheduler");
     scheduler.load('/reservations/get-reservations');
 

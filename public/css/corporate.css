@@ -15413,6 +15413,10 @@ body.tempusdominus-bootstrap-datetimepicker-widget-day-click {
   right: -40px;
 }
 
+.autocomplete {
+  z-index: 9999;
+}
+
 .event_reservation div,
 .dhx_cal_editor.event_reservation,
 .dhx_cal_event_line.event_reservation {

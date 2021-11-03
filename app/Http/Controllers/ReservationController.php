@@ -41,7 +41,7 @@ class ReservationController extends Controller
 
             $reservationsForCalendar[] = [
                 'id' => $reservation->id,
-                'text' => trim($reservation->client->enterprise_name . ' ' . $reservation->client->firstname . ' ' . $reservation->client->lastname),
+                'text' => trim($reservation->client->enterprise_name . ' ' . $reservation->client->firstname . ' ' . $reservation->client->lastname . ' ' . $reservation->client->telephone),
                 'reservation_type' => $reservation->reservation_type,
                 'start_date' => $reservation->start_date,
                 'end_date' => $reservation->end_date

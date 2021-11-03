@@ -91,9 +91,7 @@ class ClientController extends Controller
             if (!empty($client->enterprise_name)) {
                 $label[] = $client->enterprise_name;
             }
-            if (!empty($client->firstname) || !empty($client->lastname)) {
-                $label[] = $client->firstname . ' ' . $client->lastname;
-            }
+            $label[] = $client->firstname . ' ' . $client->lastname;
             if (!empty($client->telephone)) {
                 $label[] = $client->telephone;
             }

@@ -32,23 +32,23 @@ $clientId = old('client_id', $reservation->client_id);
     </div>
     <div class="row clearfix">
         <div class="col-6">
-            <div class="form-group form-group-default">
+            <div class="form-group form-group-default required">
                 <label for="firstname">Prénom</label>
-                <input type="text" id="firstname" name="client[firstname]" value="{{ old('client.firstname', $reservation->client->firstname) }}" class="form-control">
+                <input type="text" id="firstname" name="client[firstname]" value="{{ old('client.firstname', $reservation->client->firstname) }}" class="form-control" required>
             </div>
         </div>
         <div class="col-6">
-            <div class="form-group form-group-default">
+            <div class="form-group form-group-default required">
                 <label for="lastname">Nom de famille</label>
-                <input type="text" id="lastname" name="client[lastname]" value="{{ old('client.lastname', $reservation->client->lastname) }}" class="form-control">
+                <input type="text" id="lastname" name="client[lastname]" value="{{ old('client.lastname', $reservation->client->lastname) }}" class="form-control" required>
             </div>
         </div>
     </div>
     <div class="row clearfix">
         <div class="col-6">
-            <div class="form-group form-group-default">
+            <div class="form-group form-group-default required">
                 <label for="telephone">Téléphone</label>
-                <input type="text" id="telephone" name="client[telephone]" value="{{ old('client.telephone', $reservation->client->telephone) }}" class="form-control">
+                <input type="text" id="telephone" name="client[telephone]" value="{{ old('client.telephone', $reservation->client->telephone) }}" class="form-control" required>
             </div>
         </div>
         <div class="col-6">

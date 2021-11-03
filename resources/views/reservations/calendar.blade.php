@@ -62,6 +62,8 @@
 @section('scripts')
     <script src="{{ asset('js/dhtmlxscheduler.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/dhtmlxscheduler_active_links.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/dhtmlxscheduler_all_timed.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/locale_fr.js') }}" type="text/javascript"></script>
 {{--    <script src="{{ asset('js/dhtmlxscheduler_quick_info.js') }}" type="text/javascript"></script>--}}
     <script src="{{ asset('js/scheduler.js') }}" type="text/javascript"></script>
 @endsection

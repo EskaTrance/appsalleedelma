@@ -3,17 +3,7 @@
 
     'use strict';
     $(document).ready(function () {
-        // $('#datetimepicker12').datetimepicker({
-        //     inline: true,
-        //     sideBySide: true,
-        //     icons: {
-        //         time: "fa fa-clock",
-        //         date: "fa fa-calendar",
-        //         up: "fa fa-arrow-up",
-        //         down: "fa fa-arrow-down"
-        //     },
-        // });
-        $('#call_date, #start_date, #end_date, #datetimepicker1').datetimepicker({
+        $('#call_date, #start_date, #end_date, #security_deposit_return_date, #security_deposit_paid_date').datetimepicker({
             allowInputToggle: true,
             locale: 'fr',
             format: 'YYYY-MM-DD HH:mm',
