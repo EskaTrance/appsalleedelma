@@ -25,6 +25,17 @@ class ReservationService
         return $period;
     }
 
+    public function getAvailablesRepeatingReservationsDates(RepeatingReservations $repeatingReservations, Reservation $reservation)
+    {
+        $repeatingReservationsDates = $this->getRepeatingReservationsDates($repeatingReservations, $reservation);
+        $reservations = $this->getReservationsByDates($repeatingReservationsDates, $reservation);
+        $filter = function (Carbon $date, $reservations) {
+
+        };
+        $repeatingReservationsDates->addFilter($filter);
+
+    }
+
     public function getReservationsByDates(CarbonPeriod $startPeriod, Reservation $reservation)
     {
         $reservationDuration = $reservation->start_date->diffInMinutes($reservation->end_date);

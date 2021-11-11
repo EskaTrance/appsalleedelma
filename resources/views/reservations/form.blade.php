@@ -390,6 +390,16 @@ $clientId = old('client_id', $reservation->client_id);
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-check-group d-flex align-items-center" style="margin-bottom: 10px;">
+                            <div class="form-check switch switch-lg success full-width right m-b-0">
+                                <input type="checkbox" id="add_available_recurrence" name="add_available_recurrence" value="1">
+                                <label for="add_available_recurrence">Ajouter seulement les réservations disponible</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 {{--                <div class="row">--}}
 {{--                    <div class="col-3">--}}
 {{--                    <label for="fname" class="col-3 control-label">Jour de la semaine</label>--}}

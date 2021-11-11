@@ -27,7 +27,6 @@ class ReservationRequest extends FormRequest
             'payment_type' => 'required|in:interac,cash',
             'reservation_type' => 'required|in:reservation,pre_reservation,visit',
             'type' => 'required',
-            'invoice_number' => 'required_if:reservation_type,reservation',
             'booking_fees' => 'required|numeric',
             'booking_fees_paid' => 'boolean',
             'price' => 'required|numeric',

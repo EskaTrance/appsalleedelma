@@ -105,14 +105,14 @@ class ReservationController extends Controller
         $reservation->confirmation_sent = $request->has('confirmation_sent');
 
 
-//        if ($request->get('activate_recurrence')) {
+        if ($request->get('activate_recurrence')) {
 
             $repeatingReservations = new RepeatingReservations();
             $repeatingReservations->fill($request->get('repeating_reservations'));
             $repeatingReservations->repeat_start = $reservation->start_date->toDate();
             $repeatingReservations->repeat_weekday = $reservation->start_date->isoWeekday();
 
-//            if (!$request->get('add_recurrence')) {
+            if (!$request->get('add_available_recurrence')) {
                 $repeatingErrors = $this->reservationService->validateRepeatingReservations($repeatingReservations, $reservation);
                 if ($repeatingErrors->count()) {
                     if ($request->ajax()) {
@@ -120,11 +120,11 @@ class ReservationController extends Controller
                     }
                     return back()->withInput()->withErrors($repeatingErrors);
                 }
-//            }
+            }
 
             $repeatingReservations->save();
             $reservation->repeating_reservation_id = $repeatingReservations->id;
-//        }
+        }
 
         $conflictReservation = $this->reservationService->validateDateAvailable($reservation);
         if ($conflictReservation) {
@@ -144,13 +144,28 @@ class ReservationController extends Controller
 
         if ($request->get('activate_recurrence')) {
             $reservationStartDates = $this->reservationService->getRepeatingReservationsDates($repeatingReservations, $reservation);
+            $reservationsConflictingRecurrence = $this->reservationService->getReservationsByDates($reservationStartDates, $reservation);
             $reservationDuration = $reservation->start_date->diffInMinutes($reservation->end_date);
+//            if ($request->get('add_recurrence')) {
+//                $reservationStartDates->addFilter(function (Carbon $date) use ($reservationsConflictingRecurrence) {
+//                    foreach ($reservationsConflictingRecurrence as $conflictingReservation) {
+//                        if ()
+//                    }
+//                });
+//            }
             foreach ($reservationStartDates as $reservationStartDate) {
                 $reservationEndDate = $reservationStartDate->copy()->addMinutes($reservationDuration);
+                if ($request->get('add_available_recurrence')) {
+                    foreach ($reservationsConflictingRecurrence as $conflictingReservation) {
+                        if ($reservationStartDate->isBetween($conflictingReservation->start_date, $conflictingReservation->end_date) || $reservationEndDate->isBetween($conflictingReservation->start_date, $conflictingReservation->end_date)) {
+                            continue 2;
+                        }
+                    }
+                }
                 $newReservation = $reservation->replicate();
                 $newReservation->start_date = $reservationStartDate;
                 $newReservation->end_date = $reservationEndDate;
-                if ($newReservation->reservation_type === 'reservation') {
+                if ($newReservation->reservation_type === 'reservation' && !empty($reservation->invoice_number)) {
                     $newReservation->invoice_number = $reservationStartDate->format('Ymd') . 'A';
                 }
                 $newReservation->save();

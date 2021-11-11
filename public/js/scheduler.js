@@ -194,7 +194,7 @@ $(document).ready(function () {
                 for (var error in response.responseJSON.errors) {
                     $('#reservation_errors ul').append('<li>' + response.responseJSON.errors[error] + '</li>')
                 }
-                $(window).scrollTop(0);
+                $('#scheduler_reservation_lightbox').scrollTop(0)
             },
         });
     });
