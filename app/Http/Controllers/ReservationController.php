@@ -49,10 +49,18 @@ class ReservationController extends Controller
         $reservations = Reservation::all();
         $reservationsForCalendar = [];
         foreach ($reservations as $reservation) {
-
+            $clientLabel = '';
+            if (!empty($reservation->client->enterprise_name)) {
+                $clientLabel = $reservation->client->enterprise_name . '<br/>';
+            }
+            $clientLabel .= $reservation->client->firstname . ' ' . $reservation->client->lastname . '<br/>';
+            $clientLabel .= $reservation->client->telephone;
+            if (!empty($reservation->client->email)) {
+                $clientLabel .= '<br/>' . $reservation->client->email;
+            }
             $reservationsForCalendar[] = [
                 'id' => $reservation->id,
-                'text' => trim($reservation->client->enterprise_name . ' ' . $reservation->client->firstname . ' ' . $reservation->client->lastname . ' ' . $reservation->client->telephone),
+                'text' => $clientLabel,
                 'reservation_type' => $reservation->reservation_type,
                 'start_date' => $reservation->start_date,
                 'end_date' => $reservation->end_date
@@ -97,20 +105,26 @@ class ReservationController extends Controller
         $reservation->confirmation_sent = $request->has('confirmation_sent');
 
 
-        if ($request->get('activate_recurrence')) {
+//        if ($request->get('activate_recurrence')) {
+
             $repeatingReservations = new RepeatingReservations();
             $repeatingReservations->fill($request->get('repeating_reservations'));
             $repeatingReservations->repeat_start = $reservation->start_date->toDate();
             $repeatingReservations->repeat_weekday = $reservation->start_date->isoWeekday();
 
-            $repeatingErrors = $this->reservationService->validateRepeatingReservations($repeatingReservations, $reservation);
-            if ($repeatingErrors->count()) {
-                return back()->withInput()->withErrors($repeatingErrors);
-            }
+//            if (!$request->get('add_recurrence')) {
+                $repeatingErrors = $this->reservationService->validateRepeatingReservations($repeatingReservations, $reservation);
+                if ($repeatingErrors->count()) {
+                    if ($request->ajax()) {
+                        return Response::json(['errors' => $repeatingErrors->toArray()], 422);
+                    }
+                    return back()->withInput()->withErrors($repeatingErrors);
+                }
+//            }
 
             $repeatingReservations->save();
             $reservation->repeating_reservation_id = $repeatingReservations->id;
-        }
+//        }
 
         $conflictReservation = $this->reservationService->validateDateAvailable($reservation);
         if ($conflictReservation) {
@@ -184,6 +198,9 @@ class ReservationController extends Controller
         if ($conflictReservation) {
             $errors = new MessageBag();
             $errors->add('date_availability', 'Une réservation existe déjà de '. $conflictReservation->client->getClientName() . ' entre ' . $conflictReservation->start_date . ' et ' . $conflictReservation->end_date);
+            if ($request->ajax()) {
+                return Response::json(['errors' => $errors->toArray()], 422);
+            }
             return back()->withInput()->withErrors($errors);
         }
 
@@ -198,6 +215,10 @@ class ReservationController extends Controller
 
         session()->flash('success', 'La réservation à été sauvegardé');
 //        return view('reservations.edit')->with('reservation', $reservation);
+        if ($request->ajax()) {
+            $reservation->client = $client;
+            return Response::json($reservation->toArray() + ['client_label' => $reservation->client->getLabel()]);
+        }
         return back()->with('success', 'La réservation à été sauvegardé');
     }
 
@@ -226,6 +247,11 @@ class ReservationController extends Controller
             }
         })->get();
         return $conflictReservations;
+    }
+
+    public function deleteRepeatingReservations()
+    {
+
     }
 
     /**

@@ -382,7 +382,7 @@ $clientId = old('client_id', $reservation->client_id);
             <div class="form-horizontal">
                 <div class="row">
                     <div class="col-6">
-                        <div class="form-check-group d-flex align-items-center">
+                        <div class="form-check-group d-flex align-items-center" style="margin-bottom: 10px;">
                             <div class="form-check switch switch-lg success full-width right m-b-0">
                                 <input type="checkbox" id="activate_recurrence" name="activate_recurrence" value="1" {{ old('activate_recurrence', $reservation->repeating_reservation_id) ? 'checked' : '' }}>
                                 <label for="activate_recurrence">Activer récurrence</label>
@@ -390,29 +390,29 @@ $clientId = old('client_id', $reservation->client_id);
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-3">
-                    <label for="fname" class="col-3 control-label">Jour de la semaine</label>
-                        <select class="cs-select cs-skin-slide" data-init-plugin="cs-select">
-                            <option value="sightseeing">Web-safe</option>
-                            <option value="business">Helvetica</option>
-                            <option value="honeymoon">SegeoUI</option>
-                        </select>
-                    </div>
-                </div>
+{{--                <div class="row">--}}
+{{--                    <div class="col-3">--}}
+{{--                    <label for="fname" class="col-3 control-label">Jour de la semaine</label>--}}
+{{--                        <select class="cs-select cs-skin-slide" data-init-plugin="cs-select">--}}
+{{--                            <option value="sightseeing">Web-safe</option>--}}
+{{--                            <option value="business">Helvetica</option>--}}
+{{--                            <option value="honeymoon">SegeoUI</option>--}}
+{{--                        </select>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
             <div class="row">
-                <div class="col-12">
-                    <div class="form-group form-group-default input-group" style="overflow: visible;">
-                        <div class="form-input-group">
-                            <label for="repeat_start">Début récurrence</label>
-                            <input id="repeat_start" name="repeating_reservations[repeat_start]" type="text" value="{{ old('repeat_start', $reservation->repeating_reservation ? $reservation->repeating_reservation->repeat_start : null) }}" class="form-control datetimepicker-input">
-                        </div>
-                        <div class="input-group-append" data-target="#repeat_start" data-toggle="datetimepicker">
-                            <span class="input-group-text"><i class="pg-icon">calendar</i></span>
-                        </div>
-                    </div>
-                </div>
+{{--                <div class="col-12">--}}
+{{--                    <div class="form-group form-group-default input-group" style="overflow: visible;">--}}
+{{--                        <div class="form-input-group">--}}
+{{--                            <label for="repeat_start">Début récurrence</label>--}}
+{{--                            <input id="repeat_start" name="repeating_reservations[repeat_start]" type="text" value="{{ old('repeat_start', $reservation->repeating_reservation ? $reservation->repeating_reservation->repeat_start : null) }}" class="form-control datetimepicker-input">--}}
+{{--                        </div>--}}
+{{--                        <div class="input-group-append" data-target="#repeat_start" data-toggle="datetimepicker">--}}
+{{--                            <span class="input-group-text"><i class="pg-icon">calendar</i></span>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="col-12">
                     <div class="form-group form-group-default input-group" style="overflow: visible;">
                         <div class="form-input-group">

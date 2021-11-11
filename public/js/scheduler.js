@@ -17,7 +17,7 @@ $(document).ready(function () {
             if (id > 100000000) {
                 let start_date = moment(event.start_date).hours(9).minutes(0);
                 $('#start_date').val(start_date.format('YYYY-MM-DD HH:mm'));
-                let end_date = start_date.add(1, 'days').hours(1).minutes(30);
+                let end_date = start_date.hours(24).minutes(0);
                 $('#end_date').val(end_date.format('YYYY-MM-DD HH:mm'));
             }
         });
@@ -151,9 +151,20 @@ $(document).ready(function () {
     scheduler.init("scheduler");
     scheduler.load('/reservations/get-reservations');
 
+    function reservationLabel(enterprise_name, firstname, lastname, telephone, email) {
+        let label = '';
+        if (enterprise_name) {
+            label = enterprise_name += '<br/>';
+        }
+        label += firstname + ' ' + lastname + '<br/>' + telephone;
+        if (email) {
+            label += '<br/>' + email;
+        }
+        return label;
+    }
     $('#scheduler_reservation_lightbox').on('submit', '#reservation_form', function(e){
         e.preventDefault()
-
+        $('#reservation_form').data('changed', false);
         let form = $('#reservation_form');
         //
         $.ajax({
@@ -161,12 +172,13 @@ $(document).ready(function () {
             type:"POST",
             data: form.serialize(),
             success:function(response){
+                let client = response.client;
                 var event = scheduler.getEvent(scheduler.getState().lightbox_id);
                 // let event = ev;
                 scheduler.changeEventId(event.id, response.id);
                 event.start_date = moment(response.start_date).toDate();
                 event.end_date = moment(response.end_date).toDate();
-                event.text = response.client.label;
+                event.text = reservationLabel(client.enterprise_name, client.firstname, client.lastname, client.telephone, client.email);
                 scheduler.updateEvent(event.id);
 
 

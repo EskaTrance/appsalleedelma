@@ -40,19 +40,19 @@
                 var end_date = $('#end_date').val();
                 if (!moment(end_date).isValid() || e.date > moment(end_date) || (e.oldDate && e.date.dayOfYear() !== e.oldDate.dayOfYear())) {
                     let start_date = moment(e.date);
-                    let end_date = start_date.add(1, 'days').hours(1).minutes(30);
+                    let end_date = start_date.hours(24).minutes(0);
                     $('#end_date').val(end_date.format('YYYY-MM-DD HH:mm'));
                 }
                 generateInvoiceNumber();
             });
-            $('input[name=reservation_type]').change(function() {
-                generateInvoiceNumber();
-            });
             function generateInvoiceNumber() {
-                if ($('input[name=reservation_type]:checked').val() === 'reservation') {
-                    var start_date = $('#start_date').val();
-                    if (moment(start_date).isValid())
-                        $('#invoice_number').val(moment(start_date).format('YYYYMMDD') + 'A');
+                var price = parseInt($('#price').val());
+                var booking_fees = parseInt($('#booking_fees').val());
+                var security_deposit = parseInt($('#security_deposit').val());
+                var start_date = $('#start_date').val();
+
+                if ($('input[name=reservation_type]:checked').val() === 'reservation' && price + booking_fees + security_deposit > 0 && moment(start_date).isValid()) {
+                    $('#invoice_number').val(moment(start_date).format('YYYYMMDD') + 'A');
                 } else {
                     $('#invoice_number').val('');
                 }
@@ -60,7 +60,7 @@
             $('.phone-mask').inputmask({"mask": "(999) 999-9999"});
             $('.autonumeric').autoNumeric('init');
             $('#firstname, #lastname').on('keyup', function() {
-                $(this).val($(this).val().substr(0, 1).toUpperCase() + $(this).val().substr(1).toLowerCase());
+                $(this).val($(this).val().substr(0, 1).toUpperCase() + $(this).val().substr(1));
             });
 
             function calculateTotal() {
@@ -70,6 +70,7 @@
             }
             calculateTotal();
             $('#booking_fees, #price').on('change', calculateTotal);
+            $('#booking_fees, #price, #security_deposit, input[name=reservation_type]').on('change', generateInvoiceNumber);
             $('#select_guest_number').change(function () {
                 $('#guest_number').val($(this).val());
             })
