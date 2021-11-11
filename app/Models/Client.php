@@ -34,6 +34,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereTelephone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $cellphone1
+ * @property string $cellphone2
+ * @method static \Illuminate\Database\Eloquent\Builder|Client whereCellphone1($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Client whereCellphone2($value)
  */
 class Client extends Model
 {
@@ -56,10 +60,13 @@ class Client extends Model
         if (!empty($this->enterprise_name)) {
             $name[] = $this->enterprise_name;
         }
-        if (!empty($this->firstname) || !empty($this->lastname)) {
-            $name[] = $this->firstname . ' ' . $this->lastname;
-        }
+        $name[] = $this->firstname . ' ' . $this->lastname;
         return implode(' - ', $name);
+    }
+
+    public function getLabel()
+    {
+        return $this->getClientName() . ' - ' . $this->telephone;
     }
     public function reservations()
     {

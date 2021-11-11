@@ -32,7 +32,7 @@
                                     @method('DELETE')
                                     @csrf
                                     <h5 class="no-margin p-b-10">Supprimer la réservation ?</h5>
-                                    <button type="button" class="btn btn-primary btn-cons" data-dismiss="modal">Annuler</button>
+                                    <button type="button" class="btn btn-primary" id="dismissDeleteModal">Annuler</button>
                                     <button class="btn btn-danger" style="color:#fff" type="submit">Supprimer</button>
                                 </form>
                             </div>

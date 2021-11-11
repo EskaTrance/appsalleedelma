@@ -43,17 +43,24 @@
                         <div id="form_lightbox" class="modal-body" style="padding: 0">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler les changements</button>
+                            <button type="button" id="cancelChanges" class="btn btn-secondary">Annuler les changements</button>
                         </div>
                     </div>
                 </div>
-{{--                <div class="dhx_cal_ltitle" role="heading" style="cursor: move;">--}}
-{{--                    <span class="dhx_mark">&nbsp;</span><span class="dhx_time">13:30 - 13:35</span><span class="dhx_title">New event</span>--}}
-{{--                </div>--}}
-{{--                <div class="dhx_cal_larea">--}}
-{{--                    <div id="form_lightbox" class="dhx_wrap_section">--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+            </div>
+            <div class="modal fade slide-up disable-scroll" id="modalCancelChanges" tabindex="-1" role="dialog" aria-hidden="false">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content-wrapper">
+                        <div class="modal-content">
+                            <div class="modal-body text-center m-t-20">
+                                <h5 class="no-margin p-b-10">Annuler les changements ?</h5>
+                                <button type="button" class="btn btn-primary btn" data-dismiss="modal">Non</button>
+                                <button type="button" id="cancelChangesAccept" class="btn btn-danger" style="color:#fff">Oui</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
             </div>
         </div>
         <!-- END CONTAINER FLUID -->
@@ -65,5 +72,6 @@
     <script src="{{ asset('js/dhtmlxscheduler_all_timed.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/locale_fr.js') }}" type="text/javascript"></script>
 {{--    <script src="{{ asset('js/dhtmlxscheduler_quick_info.js') }}" type="text/javascript"></script>--}}
+    <script src="{{ asset('js/reservation.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/scheduler.js') }}" type="text/javascript"></script>
 @endsection

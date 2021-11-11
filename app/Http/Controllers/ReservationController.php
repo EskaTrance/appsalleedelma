@@ -4,17 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
+use App\Models\RepeatingReservations;
 use App\Models\Reservation;
 use App\Http\Requests\ReservationRequest;
+use App\Services\ReservationService;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\MessageBag;
 use Illuminate\Validation\Rule;
+use Response;
 use Validator;
 
 class ReservationController extends Controller
 {
+    protected ReservationService $reservationService;
+
+    public function __construct(ReservationService $reservationService)
+    {
+        $this->reservationService = $reservationService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -56,6 +67,7 @@ class ReservationController extends Controller
      */
     public function create()
     {
+
         $reservation = new Reservation();
         $reservation->client = new Client();
         return view('reservations.create')->with('reservation', $reservation);
@@ -83,11 +95,28 @@ class ReservationController extends Controller
         $reservation->price_paid = $request->has('price_paid');
         $reservation->liquor_license_needed = $request->has('liquor_license_needed');
         $reservation->confirmation_sent = $request->has('confirmation_sent');
-        $conflictReservation = $this->validateDateAvailable($reservation);
+
+
+        if ($request->get('activate_recurrence')) {
+            $repeatingReservations = new RepeatingReservations();
+            $repeatingReservations->fill($request->get('repeating_reservations'));
+            $repeatingReservations->repeat_start = $reservation->start_date->toDate();
+            $repeatingReservations->repeat_weekday = $reservation->start_date->isoWeekday();
+
+            $repeatingErrors = $this->reservationService->validateRepeatingReservations($repeatingReservations, $reservation);
+            if ($repeatingErrors->count()) {
+                return back()->withInput()->withErrors($repeatingErrors);
+            }
+
+            $repeatingReservations->save();
+            $reservation->repeating_reservation_id = $repeatingReservations->id;
+        }
+
+        $conflictReservation = $this->reservationService->validateDateAvailable($reservation);
         if ($conflictReservation) {
             $errors = new MessageBag();
             $errors->add('date_availability', 'Une réservation existe déjà de '. $conflictReservation->client->getClientName() . ' entre ' . $conflictReservation->start_date . ' et ' . $conflictReservation->end_date);
-            return back()->withErrors($errors);
+            return back()->withInput()->withErrors($errors);
         }
 
         if (empty($request->get('client_id'))) {
@@ -96,19 +125,30 @@ class ReservationController extends Controller
             $client = Client::findOrFail($request['client']['id']);
             $client->update($request->get('client'));
         }
-
-//        $reservation = new Reservation();
         $reservation->client_id = $client->id;
         $reservation->save();
-//        Reservation::create('')
 
-//        $reservation->update($request->all());
-//        $client = Client::findOrFail($request['client']['id']);
-//        $client->update($request->get('client'));
-////        $client->save();
+        if ($request->get('activate_recurrence')) {
+            $reservationStartDates = $this->reservationService->getRepeatingReservationsDates($repeatingReservations, $reservation);
+            $reservationDuration = $reservation->start_date->diffInMinutes($reservation->end_date);
+            foreach ($reservationStartDates as $reservationStartDate) {
+                $reservationEndDate = $reservationStartDate->copy()->addMinutes($reservationDuration);
+                $newReservation = $reservation->replicate();
+                $newReservation->start_date = $reservationStartDate;
+                $newReservation->end_date = $reservationEndDate;
+                if ($newReservation->reservation_type === 'reservation') {
+                    $newReservation->invoice_number = $reservationStartDate->format('Ymd') . 'A';
+                }
+                $newReservation->save();
+            }
+        }
+
         $request->session()->flash('success', 'La réservation à été sauvegardé');
-////        return view('reservations.edit')->with('reservation', $reservation);
-//        return back()->with('success', 'La réservation à été sauvegardé');
+        if ($request->ajax()) {
+            $reservation->client = $client;
+            $reservation->client->label = $reservation->client->getLabel();
+            return Response::json($reservation->toArray());
+        }
         return redirect()->route('reservations.edit', compact('reservation'));
     }
 
@@ -140,7 +180,7 @@ class ReservationController extends Controller
         $reservation->liquor_license_needed = $request->has('liquor_license_needed');
         $reservation->confirmation_sent = $request->has('confirmation_sent');
 
-        $conflictReservation = $this->validateDateAvailable($reservation);
+        $conflictReservation = $this->reservationService->validateDateAvailable($reservation);
         if ($conflictReservation) {
             $errors = new MessageBag();
             $errors->add('date_availability', 'Une réservation existe déjà de '. $conflictReservation->client->getClientName() . ' entre ' . $conflictReservation->start_date . ' et ' . $conflictReservation->end_date);
@@ -161,16 +201,31 @@ class ReservationController extends Controller
         return back()->with('success', 'La réservation à été sauvegardé');
     }
 
-    /**
-     * @param Reservation $reservation
-     */
-    public function validateDateAvailable(Reservation $reservation)
+    public function repeatingEvents(Reservation $reservation)
     {
-        $conflictReservation = Reservation::where('id', '!=', $reservation->id)->where(function ($query) use ($reservation) {
-            $query->whereBetween('start_date', [$reservation->start_date, $reservation->end_date])
-                ->orWhereBetween('end_date', [$reservation->start_date, $reservation->end_date]);
-        })->first();
-        return $conflictReservation;
+        $reservationDuration = $reservation->start_date->diffInMinutes($reservation->end_date);
+        $weekDay = 1;
+        $repeatStart = Carbon::now();
+        $repeatEnd = Carbon::now()->addDays(30);
+        $period = CarbonPeriod::between($repeatStart, $repeatEnd);
+        $dates = [];
+        foreach ($period as $periodDate) {
+            if ($periodDate->weekday() == $weekDay) {
+                $startDate = $periodDate->setTime($reservation->start_date->hour, $reservation->start_date->minute);
+                $dates[] = [
+                    'start_date' => $startDate,
+                    'end_date' => $startDate->addMinutes($reservationDuration),
+                ];
+            }
+        }
+
+        $conflictReservations = Reservation::where('id', '!=', $reservation->id)->where(function ($query) use ($dates) {
+            foreach ($dates as $date) {
+                $query->whereBetween('start_date', [$date['start_date'], $date['end_date']])
+                    ->orWhereBetween('end_date', [$date['start_date'], $date['end_date']]);
+            }
+        })->get();
+        return $conflictReservations;
     }
 
     /**
@@ -182,7 +237,7 @@ class ReservationController extends Controller
     {
         $client = $reservation->client;
         $reservation->delete();
-        if ($client->reservations) {
+        if (!$client->reservations) {
             $client->delete();
         }
         return redirect()->route('reservations.calendar')->with('success', 'La réservation à été supprimé');

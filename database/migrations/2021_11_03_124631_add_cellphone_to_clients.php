@@ -14,8 +14,8 @@ class AddCellphoneToClients extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('cellphone1');
-            $table->string('cellphone2');
+            $table->string('cellphone1')->nullable();
+            $table->string('cellphone2')->nullable();
         });
     }
 

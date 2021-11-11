@@ -36,6 +36,7 @@
 <script src="{{ asset('assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js') }}" type="text/javascript"></script>
 {{--<script src="{{ asset('assets/plugins/moment/moment-with-locales.min.js') }}" type="text/javascript"></script>--}}
 <script src="{{ asset('assets/plugins/jquery-autonumeric/autoNumeric.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/plugins/inputmask/jquery.inputmask.js') }}" type="text/javascript"></script>
 <!-- END VENDOR JS -->
 {{--<script src="{{ asset('js/app.js') }}" type="text/javascript"></script>--}}
 <script src="{!! mix('js/app.js') !!}" type="text/javascript"></script>

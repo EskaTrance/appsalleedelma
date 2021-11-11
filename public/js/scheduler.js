@@ -1,137 +1,4 @@
 $(document).ready(function () {
-    function bindModalFunctions() {
-        $('#call_date, #start_date, #end_date, #security_deposit_return_date, #security_deposit_paid_date').datetimepicker({
-            allowInputToggle: true,
-            locale: 'fr',
-            format: 'YYYY-MM-DD HH:mm',
-            stepping: 15,
-            icons: {
-                time: "fa fa-clock-o",
-                date: "fa fa-calendar",
-                up: "fa fa-arrow-up",
-                down: "fa fa-arrow-down"
-            }
-        });
-        $('#security_deposit_return_date').on('show.datetimepicker', (e) => {
-            if (!e.oldDate) {
-                let end_date = $('#end_date').val();
-                if (moment(end_date).isValid()) {
-                    end_date = moment(end_date).set('hours', moment().hours()).set('minutes', moment().minutes()).add(1, 'days');
-                    $('#security_deposit_return_date').val(end_date.format('YYYY-MM-DD HH:mm'));
-                }
-            }
-        });
-        $('#start_date').on('change.datetimepicker', (e) => {
-            var end_date = $('#end_date').val();
-            if (!moment(end_date).isValid() || e.date > moment(end_date) || (e.oldDate && e.date.dayOfYear() !== e.oldDate.dayOfYear())) {
-                let start_date = moment(e.date);
-                let end_date = start_date.add(1, 'days').hours(1).minutes(30);
-                $('#end_date').val(end_date.format('YYYY-MM-DD HH:mm'));
-            }
-            generateInvoiceNumber();
-        });
-        $('input[name=reservation_type]').change(function() {
-            generateInvoiceNumber();
-        });
-        function generateInvoiceNumber() {
-            if ($('input[name=reservation_type]:checked').val() === 'reservation') {
-                var start_date = $('#start_date').val();
-                if (moment(start_date).isValid())
-                    $('#invoice_number').val(moment(start_date).format('YYYYMMDD') + 'A');
-            } else {
-                $('#invoice_number').val('');
-            }
-        }
-
-        $('.autonumeric').autoNumeric('init');
-
-        function calculateTotal() {
-            var price = parseInt($('#price').val())
-            var booking_fees = parseInt($('#booking_fees').val())
-            $('#total').val(price + booking_fees);
-        }
-        calculateTotal();
-        $('#booking_fees, #price').on('change', calculateTotal);
-        $('#select_guest_number').change(function () {
-            $('#guest_number').val($(this).val());
-        })
-
-        const endpoint = '/clients/get-clients-json';
-        const clients = [];
-        fetch(endpoint)
-        .then(blob => blob.json())
-        .then(data => clients.push(...data));
-
-        var input = document.getElementById("client_search");
-        if (input) {
-            autocomplete({
-                input: input,
-                disableAutoSelect: true,
-                fetch: function (text, update) {
-                    text = text.toLowerCase();
-                    // you can also use AJAX requests instead of preloaded data
-                    // var suggestions = clients.filter(n => n.label.toLowerCase().startsWith(text));
-                    var suggestions = clients.filter(client => {
-                        const regex = new RegExp(text, 'gi')
-                        return client.label.match(regex);
-                        // n.label.toLowerCase().startsWith(text)
-
-                    })
-                    update(suggestions);
-                },
-                render: function (item, currentValue) {
-                    var div = document.createElement("div");
-                    div.textContent = item.label;
-                    if (item.rating === 'accept') {
-                        div.classList = 'bg-success';
-                    } else if (item.rating === 'warning') {
-                        div.classList = 'bg-warning';
-                    } else if (item.rating === 'block') {
-                        div.classList = 'bg-danger';
-                    }
-                    return div;
-                },
-                onSelect: function (item) {
-                    input.value = '';
-                    document.getElementById("client.id").value = item.id;
-                    document.getElementById("client_id").value = item.id;
-                    document.getElementById("enterprise_name").value = item.enterprise_name;
-                    document.getElementById("firstname").value = item.firstname;
-                    document.getElementById("lastname").value = item.lastname;
-                    document.getElementById("telephone").value = item.telephone;
-                    document.getElementById("cellphone1").value = item.cellphone1;
-                    document.getElementById("cellphone2").value = item.cellphone2;
-                    document.getElementById("email").value = item.email;
-                    document.getElementById("client_notes").value = item.notes;
-                    document.getElementById(item.rating).checked = true;
-
-                    document.getElementById('current_client_id').textContent = 'ID Client: ' + item.id;
-                    $('#current_client_id').removeClass('hide');
-                    $('#new_client_id').addClass('hide');
-                }
-            });
-        }
-
-
-        $('#new_client').click(function () {
-            document.getElementById("client.id").value = '';
-            document.getElementById("client_id").value = '';
-            document.getElementById("enterprise_name").value = '';
-            document.getElementById("firstname").value = '';
-            document.getElementById("lastname").value = '';
-            document.getElementById("telephone").value = '';
-            document.getElementById("cellphone1").value = '';
-            document.getElementById("cellphone2").value = '';
-            document.getElementById("email").value = '';
-            document.getElementById("client_notes").value = '';
-            document.getElementById('accept').checked = true;
-
-            $('#new_client_id').removeClass('hide');
-            $('#current_client_id').addClass('hide');
-        })
-    }
-
-
     scheduler.showLightbox = function (id) {
         let event = scheduler.getEvent(id);
         let url = '/reservations/' + id + '/editxhr';
@@ -252,13 +119,13 @@ $(document).ready(function () {
             }
         }
     };
-    function resetConfig(){
-        var settings;
-        if(window.innerWidth < 1000){
-            settings = compactView;
-        }else{
-            settings = fullView;
 
+    function resetConfig() {
+        var settings;
+        if (window.innerWidth < 1000) {
+            settings = compactView;
+        } else {
+            settings = fullView;
         }
         scheduler.utils.mixin(scheduler.config, settings.config, true);
         scheduler.utils.mixin(scheduler.templates, settings.templates, true);
@@ -294,12 +161,15 @@ $(document).ready(function () {
             type:"POST",
             data: form.serialize(),
             success:function(response){
-                var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
-                let event = ev;
-                // scheduler.changeEventId(ev.id, )
-                ev.text = document.getElementById("enterprise_name").value;
-                // ev.custom1 = html("custom1").value;
-                // ev.custom2 = html("custom2").value;
+                var event = scheduler.getEvent(scheduler.getState().lightbox_id);
+                // let event = ev;
+                scheduler.changeEventId(event.id, response.id);
+                event.start_date = moment(response.start_date).toDate();
+                event.end_date = moment(response.end_date).toDate();
+                event.text = response.client.label;
+                scheduler.updateEvent(event.id);
+
+
                 $('#scheduler_reservation_lightbox').modal('hide');
                 scheduler.endLightbox(true, document.getElementById('scheduler_reservation_lightbox'));
                 // $('#successMsg').show();
@@ -323,6 +193,7 @@ $(document).ready(function () {
             type: "POST",
             data: form.serialize(),
             success: function (response) {
+                $('#reservation_form').data('changed', false);
                 var event_id = scheduler.getState().lightbox_id;
                 scheduler.endLightbox(false, document.getElementById('scheduler_reservation_lightbox'));
                 $('#scheduler_reservation_lightbox').modal('hide');
@@ -330,8 +201,34 @@ $(document).ready(function () {
             }
         })
     })
-    $('#scheduler_reservation_lightbox').on('hidden.bs.modal', function() {
+    $('#scheduler_reservation_lightbox').on('click', '#cancelChanges', function() {
+        if ($('#reservation_form').data('changed')) {
+            $('#modalCancelChanges').modal('show');
+        } else {
+            $('#modalCancelChanges').modal('hide');
+            $('#scheduler_reservation_lightbox').modal('hide');
+            scheduler.endLightbox(false, document.getElementById('scheduler_reservation_lightbox'));
+        }
+    });
+    $('#modalCancelChanges').on('click', '#cancelChangesAccept', function() {
+        $('#reservation_form').data('changed', false);
+        $('#modalCancelChanges').modal('hide');
+        $('#scheduler_reservation_lightbox').modal('hide');
         scheduler.endLightbox(false, document.getElementById('scheduler_reservation_lightbox'));
+    });
+    $('#scheduler_reservation_lightbox').on('click', '#dismissDeleteModal', function() {
+        $('#modalDelete').modal('hide');
+    });
+    $('#scheduler_reservation_lightbox').on('hide.bs.modal', function(e) {
+
+        if (e.target.id === 'scheduler_reservation_lightbox') {
+            if ($('#reservation_form').data('changed')) {
+                alert('Dess changements ont été apporté à la réservation');
+                return false;
+            } else {
+                scheduler.endLightbox(false, document.getElementById('scheduler_reservation_lightbox'));
+            }
+        }
     });
 
 });

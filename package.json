@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "autocompleter": "^6.1.2",
+        "inputmask": "^5.0.6",
         "moment": "^2.29.1",
         "tempusdominus-bootstrap-4": "^5.39.0"
     }

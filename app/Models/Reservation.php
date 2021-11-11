@@ -17,17 +17,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $price
  * @property int $price_paid
  * @property string $security_deposit
- * @property string|null $security_deposit_paid_date
- * @property string|null $security_deposit_return_date
+ * @property \Illuminate\Support\Carbon|null $security_deposit_paid_date
+ * @property \Illuminate\Support\Carbon|null $security_deposit_return_date
  * @property int|null $guest_number
  * @property string|null $notes
  * @property int $client_id
  * @property string|null $invoice_number
  * @property int $confirmation_sent
  * @property int $liquor_license_needed
- * @property string $call_date
- * @property string $start_date
- * @property string $end_date
+ * @property \Illuminate\Support\Carbon $call_date
+ * @property \Illuminate\Support\Carbon $start_date
+ * @property \Illuminate\Support\Carbon $end_date
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Client $client
@@ -57,6 +57,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int|null $repeating_reservation_id
+ * @property-read \App\Models\RepeatingReservations $repeatingReservations
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereRepeatingReservationId($value)
  */
 class Reservation extends Model
 {
@@ -64,6 +67,7 @@ class Reservation extends Model
 
     protected $fillable = [
         'client_id',
+        'repeating_reservation_id',
         'invoice_number',
         'payment_type',
         'reservation_type',
@@ -72,6 +76,8 @@ class Reservation extends Model
         'booking_fees_paid',
         'price_paid',
         'security_deposit',
+        'security_deposit_paid_date',
+        'security_deposit_return_date',
         'booking_fees',
         'price',
         'guest_number',
@@ -82,9 +88,22 @@ class Reservation extends Model
         'end_date',
         'notes',
     ];
+    protected $casts = [
+        'security_deposit_paid_date' => 'datetime',
+        'security_deposit_return_date' => 'datetime',
+        'call_date' => 'datetime',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime'
+    ];
+    protected $with = ['client'];
 
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function repeatingReservations()
+    {
+        return $this->belongsTo(RepeatingReservations::class);
     }
 }
