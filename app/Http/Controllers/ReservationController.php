@@ -130,6 +130,9 @@ class ReservationController extends Controller
         if ($conflictReservation) {
             $errors = new MessageBag();
             $errors->add('date_availability', 'Une réservation existe déjà de '. $conflictReservation->client->getClientName() . ' entre ' . $conflictReservation->start_date . ' et ' . $conflictReservation->end_date);
+            if ($request->ajax()) {
+                return Response::json(['errors' => $errors->toArray()], 422);
+            }
             return back()->withInput()->withErrors($errors);
         }
 
@@ -264,9 +267,18 @@ class ReservationController extends Controller
         return $conflictReservations;
     }
 
-    public function deleteRepeatingReservations()
+    public function destroyRepeatingReservation(Reservation $reservation)
     {
+        $reservations = $reservation->repeatingReservation->reservations;
+        foreach ($reservations as $reservationRepeated) {
+            $client = $reservationRepeated->client;
+            $reservationRepeated->delete();
+            if (!$client->reservations) {
+                $client->delete();
+            }
+        }
 
+        return redirect()->route('reservations.calendar')->with('success', 'Les réservations récurrent on été supprimé');
     }
 
     /**

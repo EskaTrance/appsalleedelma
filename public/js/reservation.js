@@ -118,8 +118,8 @@
                         document.getElementById("firstname").value = item.firstname;
                         document.getElementById("lastname").value = item.lastname;
                         document.getElementById("telephone").value = item.telephone;
-                        document.getElementById("cellphone1").value = item.cellphone1;
-                        document.getElementById("cellphone2").value = item.cellphone2;
+                        document.getElementById("cellphone1").value = item.cellphone1 ? item.cellphone1 : '';
+                        document.getElementById("cellphone2").value = item.cellphone2 ? item.cellphone2 : '';
                         document.getElementById("email").value = item.email;
                         document.getElementById("client_notes").value = item.notes;
                         document.getElementById(item.rating).checked = true;

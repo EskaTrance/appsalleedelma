@@ -191,13 +191,14 @@ $(document).ready(function () {
                 console.log(response.responseJSON.errors);
                 $('#reservation_errors').show();
                 $('#reservation_errors ul').html('');
-                for (var error in response.responseJSON.errors) {
-                    if ($.isArray(response.responseJSON.errors[error])) {
-                        for (var index in response.responseJSON.errors) {
-                            $('#reservation_errors ul').append('<li>' + response.responseJSON.errors[error][index] + '</li>')
+                let errors = response.responseJSON.errors;
+                for (var error_name in errors) {
+                    if ($.isArray(errors[error_name])) {
+                        for (var index in errors[error_name]) {
+                            $('#reservation_errors ul').append('<li>' + errors[error_name][index] + '</li>')
                         }
                     } else {
-                        $('#reservation_errors ul').append('<li>' + response.responseJSON.errors[error] + '</li>')
+                        $('#reservation_errors ul').append('<li>' + errors[error_name] + '</li>')
                     }
                 }
                 $('#scheduler_reservation_lightbox').scrollTop(0)

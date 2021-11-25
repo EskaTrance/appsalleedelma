@@ -58,7 +58,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property int|null $repeating_reservation_id
- * @property-read \App\Models\RepeatingReservations $repeatingReservations
+ * @property-read \App\Models\RepeatingReservations $repeatingReservation
  * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereRepeatingReservationId($value)
  */
 class Reservation extends Model

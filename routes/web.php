@@ -20,6 +20,7 @@ Route::get('reservations/calendar', [ReservationController::class, 'calendar'])-
 Route::get('reservations/get-reservations', [ReservationController::class, 'getReservations']);
 Route::get('reservations/{reservation}/editxhr', [ReservationController::class, 'editxhr']);
 Route::get('reservations/createxhr', [ReservationController::class, 'createxhr']);
+Route::get('reservations/{reservation}/destroy-repeating', [ReservationController::class, 'destroyRepeatingReservation'])->name('reservations.destroy-repeating');
 Route::resource('reservations', ReservationController::class);
 Route::get('clients/get-clients-json', [ClientController::class, 'getClientsJson']);
 Route::resource('clients', ClientController::class);
