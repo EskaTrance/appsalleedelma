@@ -231,8 +231,8 @@ class ReservationController extends Controller
         session()->flash('success', 'La réservation à été sauvegardé');
 //        return view('reservations.edit')->with('reservation', $reservation);
         if ($request->ajax()) {
-            $reservation->client = $client;
-            return Response::json($reservation->toArray() + ['client_label' => $reservation->client->getLabel()]);
+            $reservation->client();
+            return Response::json($reservation->toArray());
         }
         return back()->with('success', 'La réservation à été sauvegardé');
     }

@@ -95,14 +95,14 @@ class Reservation extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime'
     ];
-    protected $with = ['client'];
+    protected $with = ['client', 'repeatingReservation'];
 
     public function client()
     {
         return $this->belongsTo(Client::class);
     }
 
-    public function repeatingReservations()
+    public function repeatingReservation()
     {
         return $this->belongsTo(RepeatingReservations::class);
     }
