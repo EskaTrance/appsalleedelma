@@ -237,12 +237,13 @@ $(document).ready(function () {
     });
     $('#scheduler_reservation_lightbox').on('click', '#dismissDeleteModal', function() {
         $('#modalDelete').modal('hide');
+        $('#modalDeleteRepeating').modal('hide');
     });
     $('#scheduler_reservation_lightbox').on('hide.bs.modal', function(e) {
 
         if (e.target.id === 'scheduler_reservation_lightbox') {
             if ($('#reservation_form').data('changed')) {
-                alert('Dess changements ont été apporté à la réservation');
+                alert('Des changements ont été apporté à la réservation');
                 return false;
             } else {
                 scheduler.endLightbox(false, document.getElementById('scheduler_reservation_lightbox'));

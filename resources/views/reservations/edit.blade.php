@@ -80,10 +80,14 @@
                                             Fin: {{ ucwords($reservation->repeatingReservation->repeat_end->isoFormat('dddd LL')) }}
                                         </p>
                                         <h6>Réservations</h6>
+                                        <p>Nombre de réservations: {{ $reservation->repeatingReservation->reservations->count() }}</p>
                                         <ul>
-                                            @foreach($reservation->repeatingReservation->reservations as $repeatedReservation)
+                                            @foreach($reservation->repeatingReservation->reservations->splice(0, 4) as $repeatedReservation)
                                                 <li>{{ $repeatedReservation->start_date->isoFormat('lll') }} au <br/> {{ $repeatedReservation->end_date->isoFormat('lll') }}</li>
                                             @endforeach
+                                            @if($reservation->repeatingReservation->reservations->count() > 4)
+                                                <li>...</li>
+                                            @endif
                                         </ul>
                                         <button type="button" class="btn btn-primary btn-cons" data-dismiss="modal">Annuler</button>
                                         <button class="btn btn-danger" style="color:#fff" type="submit">Supprimer</button>

@@ -57,22 +57,22 @@ $clientId = old('client_id', $reservation->client_id);
                 </div>
                 <div class="col-6">
                     <div class="form-group form-group-default">
-                        <label for="email">Courriel</label>
-                        <input type="text" id="email" name="client[email]" value="{{ old('client.email', $reservation->client->email) }}" class="form-control">
+                        <label for="cellphone2">Téléphone 2</label>
+                        <input type="text" id="cellphone2" name="client[cellphone2]" value="{{ old('client.cellphone2', $reservation->client->cellphone2) }}" class="form-control phone-mask" data-inputmask="'mask': '(999) 999-9999'">
                     </div>
                 </div>
             </div>
             <div class="row clearfix">
                 <div class="col-6">
                     <div class="form-group form-group-default">
-                        <label for="cellphone1">Cellulaire principal</label>
+                        <label for="cellphone1">Téléphone 3</label>
                         <input type="text" id="cellphone1" name="client[cellphone1]" value="{{ old('client.cellphone1', $reservation->client->cellphone1) }}" class="form-control phone-mask" data-inputmask="'mask': '(999) 999-9999'">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group form-group-default">
-                        <label for="cellphone2">Cellulaire 2</label>
-                        <input type="text" id="cellphone2" name="client[cellphone2]" value="{{ old('client.cellphone2', $reservation->client->cellphone2) }}" class="form-control phone-mask" data-inputmask="'mask': '(999) 999-9999'">
+                        <label for="email">Courriel</label>
+                        <input type="text" id="email" name="client[email]" value="{{ old('client.email', $reservation->client->email) }}" class="form-control">
                     </div>
                 </div>
             </div>

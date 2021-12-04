@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientRequest;
+use App\Mail\Confirmation;
 use App\Models\Client;
 use App\Models\RepeatingReservations;
 use App\Models\Reservation;
@@ -12,6 +13,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\MessageBag;
 use Illuminate\Validation\Rule;
 use Response;
@@ -42,6 +44,11 @@ class ReservationController extends Controller
     public function calendar()
     {
         return view('reservations.calendar');
+    }
+
+    public function show(Reservation $reservation)
+    {
+        return view('reservations.show')->with('reservation', $reservation);
     }
 
     public function getReservations(Request $request)
@@ -238,6 +245,17 @@ class ReservationController extends Controller
             return Response::json($reservation->toArray());
         }
         return back()->with('success', 'La réservation à été sauvegardé');
+    }
+
+    public function sendConfirmation(Reservation $reservation)
+    {
+        Mail::to($reservation->client->email)
+            ->send(new Confirmation($reservation));
+    }
+
+    public function confirmationEmail(Reservation $reservation)
+    {
+        return view('emails.confirmation')->with('reservation', $reservation);
     }
 
     public function repeatingEvents(Reservation $reservation)

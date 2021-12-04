@@ -38,7 +38,7 @@
     @include('layouts.sidebar')
     <div class="page-container">
         @include('layouts.header')
-        <div class="page-container-wrapper">
+        <div class="page-content-wrapper">
             <div class="content">
                 @yield('content')
             </div>
