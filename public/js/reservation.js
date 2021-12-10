@@ -149,6 +149,34 @@
             $('#reservation_form :input, #reservation_form textarea').change(function() {
                 $('#reservation_form').data('changed', true);
             })
+
+            $('#send_confirmation').click(function() {
+                $.ajax({
+                    url: $(this).data('url'),
+                    success: function(response) {
+                        $('#confirmation_label').addClass('hide');
+                        $('#confirmation_sent_label').removeClass('hide');
+                        $('.page-content-wrapper').pgNotification({
+                            style: 'bar',
+                            message: response.message,
+                            position: 'top',
+                            timeout: 0,
+                            type: response.type
+                        }).show();
+                    }
+                })
+            });
+            $('#print_confirmation').click(function() {
+                $.ajax({
+                    url: $(this).data('url'),
+                    success: function(response) {
+                        var a = window.open('');
+                        a.document.write(response);
+                        a.document.close();
+                        a.print();
+                    }
+                });
+            });
         }
         if ($('#reservation_form').length) {
             bindModalFunctions();

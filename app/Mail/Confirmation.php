@@ -30,8 +30,13 @@ class Confirmation extends Mailable
      */
     public function build()
     {
+        if ($this->reservation->reservation_type === 'reservation') {
+            $subject = 'Confirmation de la Réservation';
+        } else {
+            $subject = 'Confirmation de la Pré-réservation';
+        }
         return $this->view('emails.confirmation')
-            ->subject('Salle Edelma - Confirmation')
+            ->subject('Salle Edelma - ' . $subject)
             ->bcc('ccarriere01@gmail.com')
             ->attach('assets/reglements-salle-edelma.pdf');
     }

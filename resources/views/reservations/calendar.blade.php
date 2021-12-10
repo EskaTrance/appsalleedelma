@@ -1,20 +1,5 @@
 @extends('layouts.app')
 @section('content')
-{{--    <div class="content ">--}}
-        <!-- START JUMBOTRON -->
-{{--        <div class="jumbotron" data-pages="parallax">--}}
-{{--            <div class=" container-fluid   container-fixed-lg sm-p-l-0 sm-p-r-0">--}}
-{{--                <div class="inner">--}}
-{{--                    <!-- START BREADCRUMB -->--}}
-{{--                    <ol class="breadcrumb">--}}
-{{--                        <li class="breadcrumb-item"><a href="#">Pages</a></li>--}}
-{{--                        <li class="breadcrumb-item active">Blank template</li>--}}
-{{--                    </ol>--}}
-{{--                    <!-- END BREADCRUMB -->--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-        <!-- END JUMBOTRON -->
         <!-- START CONTAINER FLUID -->
         <div class="container">
             <div id="scheduler" class="dhx_cal_container" style='width:100%; height:600px;'>

@@ -375,45 +375,45 @@ $clientId = old('client_id', $reservation->client_id);
 </div>
 <div class="card">
     <div class="card-header">
-        <h4>Récurrence</h4>
+        <h4>Options de récurrence</h4>
     </div>
     <div class="card-body">
-            <input type="hidden" name="repeating_reservation_id" value="{{ old('repeating_reservation_id', $reservation->repeating_reservation_id) }}">
-            @if (empty($reservation->id))
-                <div class="form-horizontal">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-check-group d-flex align-items-center" style="margin-bottom: 10px;">
-                                <div class="form-check switch switch-lg success full-width right m-b-0">
-                                    <input type="checkbox" id="activate_recurrence" name="activate_recurrence" value="1" {{ old('activate_recurrence', $reservation->repeating_reservation_id) ? 'checked' : '' }}>
-                                    <label for="activate_recurrence">Activer récurrence</label>
-                                </div>
+        <input type="hidden" name="repeating_reservation_id" value="{{ old('repeating_reservation_id', $reservation->repeating_reservation_id) }}">
+        @if (empty($reservation->id))
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-check-group d-flex align-items-center" style="margin-bottom: 10px;">
+                            <div class="form-check switch switch-lg success full-width right m-b-0">
+                                <input type="checkbox" id="activate_recurrence" name="activate_recurrence" value="1" {{ old('activate_recurrence', $reservation->repeating_reservation_id) ? 'checked' : '' }}>
+                                <label for="activate_recurrence">Activer récurrence</label>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-check-group d-flex align-items-center" style="margin-bottom: 10px;">
-                                <div class="form-check switch switch-lg success full-width right m-b-0">
-                                    <input type="checkbox" id="add_available_recurrence" name="add_available_recurrence" value="1">
-                                    <label for="add_available_recurrence">Ajouter seulement les réservations disponible</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    {{--                <div class="row">--}}
-    {{--                    <div class="col-3">--}}
-    {{--                    <label for="fname" class="col-3 control-label">Jour de la semaine</label>--}}
-    {{--                        <select class="cs-select cs-skin-slide" data-init-plugin="cs-select">--}}
-    {{--                            <option value="sightseeing">Web-safe</option>--}}
-    {{--                            <option value="business">Helvetica</option>--}}
-    {{--                            <option value="honeymoon">SegeoUI</option>--}}
-    {{--                        </select>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
                 </div>
-            @endif
-            <div class="row">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-check-group d-flex align-items-center" style="margin-bottom: 10px;">
+                            <div class="form-check switch switch-lg success full-width right m-b-0">
+                                <input type="checkbox" id="add_available_recurrence" name="add_available_recurrence" value="1">
+                                <label for="add_available_recurrence">Ajouter seulement les réservations disponible</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{{--                <div class="row">--}}
+{{--                    <div class="col-3">--}}
+{{--                    <label for="fname" class="col-3 control-label">Jour de la semaine</label>--}}
+{{--                        <select class="cs-select cs-skin-slide" data-init-plugin="cs-select">--}}
+{{--                            <option value="sightseeing">Web-safe</option>--}}
+{{--                            <option value="business">Helvetica</option>--}}
+{{--                            <option value="honeymoon">SegeoUI</option>--}}
+{{--                        </select>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+            </div>
+        @endif
+        <div class="row">
 {{--                <div class="col-12">--}}
 {{--                    <div class="form-group form-group-default input-group" style="overflow: visible;">--}}
 {{--                        <div class="form-input-group">--}}
@@ -425,17 +425,52 @@ $clientId = old('client_id', $reservation->client_id);
 {{--                        </div>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-                <div class="col-12">
-                    <div class="form-group form-group-default input-group" style="overflow: visible;">
-                        <div class="form-input-group">
-                            <label for="repeat_end">Fin récurrence</label>
-                            <input id="repeat_end" name="repeating_reservations[repeat_end]" type="text" value="{{ old('repeat_end', $reservation->repeating_reservation_id ? $reservation->repeatingReservation->repeat_end : null) }}" class="form-control datetimepicker-input" {{ !empty($reservation->id) ? 'disabled' : '' }}>
-                        </div>
-                        <div class="input-group-append" data-target="#repeat_end" data-toggle="datetimepicker">
-                            <span class="input-group-text"><i class="pg-icon">calendar</i></span>
-                        </div>
+            <div class="col-12">
+                <div class="form-group form-group-default input-group" style="overflow: visible;">
+                    <div class="form-input-group">
+                        <label for="repeat_end">Fin récurrence</label>
+                        <input id="repeat_end" name="repeating_reservations[repeat_end]" type="text" value="{{ old('repeat_end', $reservation->repeating_reservation_id ? $reservation->repeatingReservation->repeat_end : null) }}" class="form-control datetimepicker-input" {{ !empty($reservation->id) ? 'disabled' : '' }}>
+                    </div>
+                    <div class="input-group-append" data-target="#repeat_end" data-toggle="datetimepicker">
+                        <span class="input-group-text"><i class="pg-icon">calendar</i></span>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="mt-2">
+                <button class="btn btn-success btn-icon-left m-b-10 m-r-10" style="color:#FFFFFF;" type="submit">
+                    <i class="pg-icon">tick</i>
+                    Sauvegarder
+                </button>
+                <button id="print_confirmation" class="btn btn-complete btn-icon-left m-b-10 m-r-10" data-url="{{ route('reservations.show', ['reservation' => $reservation]) }}" style="color:#FFFFFF;" type="button">
+                    <i class="pg-icon">printer</i>
+                    Imprimer
+                </button>
+                <button id="send_confirmation" class="btn btn-primary btn-icon-left m-b-10" data-url="{{ route('reservations.send-confirmation', ['reservation' => $reservation]) }}" type="button">
+                    <i class="pg-icon">mail</i>
+                    <span id="confirmation_label" class="{{ $reservation->confirmation_sent ? 'hide' : '' }}">Envoyer la confirmation</span>
+                    <span id="confirmation_sent_label" class="{{ $reservation->confirmation_sent ? '' : 'hide' }}">Confirmation envoyée</span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mt-2">
+                <button class="btn btn-danger btn-icon-left m-b-10 m-r-10" type="button"  data-toggle="modal" data-target="#modalDelete">
+                    <i class="pg-icon">trash</i>
+                    Supprimer
+                </button>
+                @if ($reservation->repeating_reservation_id)
+                    <button class="btn btn-danger btn-icon-left m-b-10" type="button"  data-toggle="modal" data-target="#modalDeleteRepeating">
+                        <i class="pg-icon">trash</i>
+                        Supprimer les réservations récurrente
+                    </button>
+                @endif
+            </div>
+        </div>
     </div>
 </div>

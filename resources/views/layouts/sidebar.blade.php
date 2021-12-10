@@ -36,10 +36,6 @@
                 </a>
                 <span class="icon-thumbnail"><i class="pg-icon">brush</i></span>
             </li>
-            <li class="m-b-40">
-                <a href="http://changelog.pages.revox.io/" rel="noreferrer" target="_blank"><span class="title">Changelog</span></a>
-                <span class="icon-thumbnail"><i class="pg-icon">clipboard</i></span>
-            </li>
         </ul>
         <div class="clearfix"></div>
     </div>

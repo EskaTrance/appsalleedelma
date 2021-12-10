@@ -2,7 +2,8 @@ $(document).ready(function () {
     scheduler.showLightbox = function (id) {
         let event = scheduler.getEvent(id);
         let url = '/reservations/' + id + '/editxhr';
-        if (id > 100000000) {
+        let isNewId = id > 100000000;
+        if (isNewId) {
             url = '/reservations/createxhr'
         }
         $.ajax({
@@ -14,11 +15,14 @@ $(document).ready(function () {
             $('#scheduler_reservation_lightbox').modal('show');
             scheduler.startLightbox(id, reservationForm);
             bindModalFunctions();
-            if (id > 100000000) {
+            if (isNewId) {
+                $('#modal_title').html('Nouvelle Réservation');
                 let start_date = moment(event.start_date).hours(9).minutes(0);
                 $('#start_date').val(start_date.format('YYYY-MM-DD HH:mm'));
                 let end_date = start_date.hours(24).minutes(0);
                 $('#end_date').val(end_date.format('YYYY-MM-DD HH:mm'));
+            } else {
+                $('#modal_title').html('Réservation ID: ' + id);
             }
         });
     }
@@ -163,7 +167,7 @@ $(document).ready(function () {
         return label;
     }
     $('#scheduler_reservation_lightbox').on('submit', '#reservation_form', function(e){
-        e.preventDefault()
+        e.preventDefault();
         $('#reservation_form').data('changed', false);
         let form = $('#reservation_form');
         //
@@ -240,7 +244,6 @@ $(document).ready(function () {
         $('#modalDeleteRepeating').modal('hide');
     });
     $('#scheduler_reservation_lightbox').on('hide.bs.modal', function(e) {
-
         if (e.target.id === 'scheduler_reservation_lightbox') {
             if ($('#reservation_form').data('changed')) {
                 alert('Des changements ont été apporté à la réservation');

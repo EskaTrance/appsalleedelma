@@ -97,6 +97,17 @@ class Reservation extends Model
     ];
     protected $with = ['client', 'repeatingReservation'];
 
+    public function displayDate()
+    {
+        $date = ucwords($this->start_date->isoFormat('LLL'));
+        if ($this->start_date->dayOfYear === $this->end_date->dayOfYear || ($this->end_date->dayOfYear === $this->start_date->dayOfYear + 1 && $this->end_date->format('00:00'))) {
+            $date .= ' - ' . $this->end_date->isoFormat('LT');
+        } else {
+            $date .= ' - ' . ucwords($this->end_date->isoFormat('LLL'));
+        }
+        return $date;
+    }
+
     public function client()
     {
         return $this->belongsTo(Client::class);
