@@ -249,9 +249,15 @@ class ReservationController extends Controller
 
     public function sendConfirmation(Reservation $reservation)
     {
-        Mail::to($reservation->client->email)
-            ->send(new Confirmation($reservation));
-        return Response::json(['message' => 'La confirmation à été envoyé à ' . $reservation->client->email, 'type' => 'success']);
+        if (!empty($reservation->client->email)) {
+            Mail::to($reservation->client->email)
+                ->send(new Confirmation($reservation));
+            $reservation->confirmation_sent = true;
+            $reservation->save();
+            return Response::json(['message' => 'La confirmation à été envoyé à ' . $reservation->client->email, 'type' => 'success']);
+        } else {
+            return Response::json(['message' => 'Un courriel est requis.', 'type' => 'danger']);
+        }
     }
 
     public function confirmationEmail(Reservation $reservation)

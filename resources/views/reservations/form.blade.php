@@ -447,30 +447,34 @@ $clientId = old('client_id', $reservation->client_id);
                     <i class="pg-icon">tick</i>
                     Sauvegarder
                 </button>
-                <button id="print_confirmation" class="btn btn-complete btn-icon-left m-b-10 m-r-10" data-url="{{ route('reservations.show', ['reservation' => $reservation]) }}" style="color:#FFFFFF;" type="button">
-                    <i class="pg-icon">printer</i>
-                    Imprimer
-                </button>
-                <button id="send_confirmation" class="btn btn-primary btn-icon-left m-b-10" data-url="{{ route('reservations.send-confirmation', ['reservation' => $reservation]) }}" type="button">
-                    <i class="pg-icon">mail</i>
-                    <span id="confirmation_label" class="{{ $reservation->confirmation_sent ? 'hide' : '' }}">Envoyer la confirmation</span>
-                    <span id="confirmation_sent_label" class="{{ $reservation->confirmation_sent ? '' : 'hide' }}">Confirmation envoyée</span>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="mt-2">
-                <button class="btn btn-danger btn-icon-left m-b-10 m-r-10" type="button"  data-toggle="modal" data-target="#modalDelete">
-                    <i class="pg-icon">trash</i>
-                    Supprimer
-                </button>
-                @if ($reservation->repeating_reservation_id)
-                    <button class="btn btn-danger btn-icon-left m-b-10" type="button"  data-toggle="modal" data-target="#modalDeleteRepeating">
-                        <i class="pg-icon">trash</i>
-                        Supprimer les réservations récurrente
+                @if($reservation->id)
+                    <button id="print_confirmation" class="btn btn-complete btn-icon-left m-b-10 m-r-10" data-url="{{ route('reservations.show', ['reservation' => $reservation]) }}" style="color:#FFFFFF;" type="button">
+                        <i class="pg-icon">printer</i>
+                        Imprimer
+                    </button>
+                    <button id="send_confirmation" class="btn btn-primary btn-icon-left m-b-10" data-url="{{ route('reservations.send-confirmation', ['reservation' => $reservation]) }}" type="button">
+                        <i class="pg-icon">mail</i>
+                        <span id="confirmation_label" class="{{ $reservation->confirmation_sent ? 'hide' : '' }}">Envoyer la confirmation</span>
+                        <span id="confirmation_sent_label" class="{{ $reservation->confirmation_sent ? '' : 'hide' }}">Confirmation envoyée</span>
                     </button>
                 @endif
             </div>
         </div>
+        @if($reservation->id)
+            <div class="row">
+                <div class="mt-2">
+                    <button class="btn btn-danger btn-icon-left m-b-10 m-r-10" type="button"  data-toggle="modal" data-target="#modalDelete">
+                        <i class="pg-icon">trash</i>
+                        Supprimer
+                    </button>
+                    @if ($reservation->repeating_reservation_id)
+                        <button class="btn btn-danger btn-icon-left m-b-10" type="button"  data-toggle="modal" data-target="#modalDeleteRepeating">
+                            <i class="pg-icon">trash</i>
+                            Supprimer les réservations récurrente
+                        </button>
+                    @endif
+                </div>
+            </div>
+        @endif
     </div>
 </div>

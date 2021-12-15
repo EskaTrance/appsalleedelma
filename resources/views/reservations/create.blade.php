@@ -1,17 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <div class="jumbotron" data-pages="parallax">
-        <div class=" container-fluid   container-fixed-lg sm-p-l-0 sm-p-r-0">
-            <div class="inner">
-                <!-- START BREADCRUMB -->
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                    <li class="breadcrumb-item active">Blank template</li>
-                </ol>
-                <!-- END BREADCRUMB -->
-            </div>
-        </div>
-    </div>
     <div class="container">
         <div class="card">
             @if ($flash = session('success'))
@@ -37,12 +25,6 @@
         <form action="{{ route('reservations.store') }}" method="POST" id="reservation_form" role="form" autocomplete="off" novalidate>
             @csrf
             @include('reservations.form')
-            <br>
-            <div class="row">
-                <div class="col-4">
-                    <button class="btn btn-success pull-left" style="color:#fff;" type="submit">Sauvegarder la réservation</button>
-                </div>
-            </div>
         </form>
     </div>
 @endsection
